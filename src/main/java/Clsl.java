@@ -11,7 +11,7 @@ public class Clsl {
                 + " \\____|_|___/_|\n";
         String greet = "Hello! I'm Clsl.\n"
                 + "What can I do for you?\n";
-        String end = "Bye. Hope to see you again soon!";
+        String end = "\nBye. Hope to see you again soon!";
 
         List<Task> list = new ArrayList<>();
 
@@ -24,7 +24,7 @@ public class Clsl {
         while (!userInput.equals("bye")) {
             try {
                 if (userInput.equals("list")) {
-                    System.out.println("\nHere are your task in your list:");
+                    System.out.println("\nHere are your tasks in your list:");
                     for (int i = 0; i < list.size(); i++) {
                         System.out.println((i + 1)
                                 + "."
@@ -60,7 +60,7 @@ public class Clsl {
                             + "\n"
                             + "Now you have "
                             + list.size()
-                            + " task in the list.\n");
+                            + " tasks in the list.\n");
                 } else if (userInput.startsWith("deadline")) {
                     String description = userInput.substring(8).trim();
                     if (description.isEmpty()) {
@@ -86,7 +86,7 @@ public class Clsl {
                             + "\n"
                             + "Now you have "
                             + list.size()
-                            + " task in the list.\n");
+                            + " tasks in the list.\n");
                 } else if (userInput.startsWith("event")) {
                     String description = userInput.substring(5).trim();
                     if (description.isEmpty()) {
@@ -123,12 +123,22 @@ public class Clsl {
                             + "\n"
                             + "Now you have "
                             + list.size()
-                            + " task in the list.\n");
+                            + " tasks in the list.\n");
+                } else if (userInput.startsWith("delete")) {
+                    String[] parts = userInput.split(" ");
+                    int taskNumber = Integer.parseInt(parts[1]) - 1;
+                    Task removed = list.remove(taskNumber);
+                    System.out.println("\nNoted. I've removed this task:"
+                            + "\n  "
+                            + removed.toString()
+                            + "\n"
+                            + "Now you have "
+                            + list.size()
+                            + " tasks in the list.\n");
                 } else {
                     throw new ClslException("I don't understand");
                 }
-            }
-            catch (ClslException e) {
+            } catch (ClslException e) {
                 System.out.println("\n" + e.getMessage() + "\n");
             }
             userInput = scanner.nextLine();
