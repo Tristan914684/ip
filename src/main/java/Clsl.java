@@ -22,77 +22,114 @@ public class Clsl {
         String userInput = scanner.nextLine();
 
         while (!userInput.equals("bye")) {
-            if (userInput.equals("list")) {
-                System.out.println("\nHere are your task in your list:");
-                for (int i = 0; i < list.size(); i++) {
-                    System.out.println((i + 1)
-                            + "."
-                            + list.get(i).toString());
+            try {
+                if (userInput.equals("list")) {
+                    System.out.println("\nHere are your task in your list:");
+                    for (int i = 0; i < list.size(); i++) {
+                        System.out.println((i + 1)
+                                + "."
+                                + list.get(i).toString());
+                    }
+                    System.out.println("");
+                } else if (userInput.startsWith("mark")) {
+                    String[] parts = userInput.split(" ");
+                    int taskNumber = Integer.parseInt(parts[1]) - 1;
+                    list.get(taskNumber).markAsDone();
+                    System.out.println("\nNice! I've marked this task as Done:"
+                            + "\n"
+                            + list.get(taskNumber).toString()
+                            + "\n");
+                } else if (userInput.startsWith("unmark")) {
+                    String[] parts = userInput.split(" ");
+                    int taskNumber = Integer.parseInt(parts[1]) - 1;
+                    list.get(taskNumber).unmarkAsDone();
+                    System.out.println("\nOK, I've marked this task as not done yet:"
+                            + "\n"
+                            + list.get(taskNumber).toString()
+                            + "\n");
+                } else if (userInput.startsWith("todo")) {
+                    String description = userInput.substring(4).trim();
+                    if (description.isEmpty()) {
+                        throw new ClslException("todo what exactly?");
+                    }
+                    ToDo t = new ToDo(description);
+                    list.add(t);
+                    System.out.println("Got it. I've added this task:"
+                            + "\n  "
+                            + t.toString()
+                            + "\n"
+                            + "Now you have "
+                            + list.size()
+                            + " task in the list.\n");
+                } else if (userInput.startsWith("deadline")) {
+                    String description = userInput.substring(8).trim();
+                    if (description.isEmpty()) {
+                        throw new ClslException("deadline of what?");
+                    }
+                    if (!description.contains("/by")) {
+                        throw new ClslException("by when?");
+                    }
+                    String[] parts = description.split("/by", 2);
+                    String name = parts[0].trim();
+                    if (name.isEmpty()) {
+                        throw new ClslException("deadline of what?");
+                    }
+                    String by = parts[1].trim();
+                    if (by.isEmpty()) {
+                        throw new ClslException("by when?");
+                    }
+                    Deadline d = new Deadline(name, by);
+                    list.add(d);
+                    System.out.println("Got it. I've added this task:"
+                            + "\n  "
+                            + d.toString()
+                            + "\n"
+                            + "Now you have "
+                            + list.size()
+                            + " task in the list.\n");
+                } else if (userInput.startsWith("event")) {
+                    String description = userInput.substring(5).trim();
+                    if (description.isEmpty()) {
+                        throw new ClslException("event of what?");
+                    }
+                    if (!description.contains("/from")) {
+                        throw new ClslException("from when?");
+                    }
+                    if (!description.contains("/to")) {
+                        throw new ClslException("to when?");
+                    }
+                    String[] parts1 = description.split("/from", 2);
+                    String name = parts1[0].trim();
+                    if (name.isEmpty()) {
+                        throw new ClslException("event of what?");
+                    }
+                    if (!parts1[1].contains("/to")) {
+                        throw new ClslException("to when?");
+                    }
+                    String[] parts2 = parts1[1].split("/to", 2);
+                    String from = parts2[0].trim();
+                    String to = parts2[1].trim();
+                    if (from.isEmpty()) {
+                        throw new ClslException("from when?");
+                    }
+                    if (to.isEmpty()) {
+                        throw new ClslException("to when?");
+                    }
+                    Event e = new Event(name, from, to);
+                    list.add(e);
+                    System.out.println("Got it. I've added this task:"
+                            + "\n  "
+                            + e.toString()
+                            + "\n"
+                            + "Now you have "
+                            + list.size()
+                            + " task in the list.\n");
+                } else {
+                    throw new ClslException("I don't understand");
                 }
-                System.out.println("");
             }
-            else if (userInput.startsWith("mark")) {
-                String[] parts = userInput.split(" ");
-                int taskNumber = Integer.parseInt(parts[1]) - 1;
-                list.get(taskNumber).markAsDone();
-                System.out.println("\nNice! I've marked this task as Done:"
-                        + "\n"
-                        + list.get(taskNumber).toString()
-                        + "\n");
-            }
-            else if (userInput.startsWith("unmark")) {
-                String[] parts = userInput.split(" ");
-                int taskNumber = Integer.parseInt(parts[1]) - 1;
-                list.get(taskNumber).unmarkAsDone();
-                System.out.println("\nOK, I've marked this task as not done yet:"
-                        + "\n"
-                        + list.get(taskNumber).toString()
-                        + "\n");
-            }
-            else if (userInput.startsWith("todo")) {
-                ToDo t = new ToDo(userInput.substring(5));
-                list.add(t);
-                System.out.println("Got it. I've added this task:"
-                        + "\n  "
-                        + t.toString()
-                        + "\n"
-                        + "Now you have "
-                        + list.size()
-                        + " task in the list.\n");
-            }
-            else if (userInput.startsWith("deadline")) {
-                String[] parts = userInput.substring(9).split("/by");
-                Deadline d = new Deadline(parts[0].trim(), parts[1].trim());
-                list.add(d);
-                System.out.println("Got it. I've added this task:"
-                        + "\n  "
-                        + d.toString()
-                        + "\n"
-                        + "Now you have "
-                        + list.size()
-                        + " task in the list.\n");
-            }
-            else if (userInput.startsWith("event")) {
-                String[] parts1 = userInput.substring(6).split("/from");
-                String name = parts1[0].trim();
-                String[] parts2 = parts1[1].split("/to");
-                String from = parts2[0].trim();
-                String to = parts2[1].trim();
-                Event e = new Event(name, from, to);
-                list.add(e);
-                System.out.println("Got it. I've added this task:"
-                        + "\n  "
-                        + e.toString()
-                        + "\n"
-                        + "Now you have "
-                        + list.size()
-                        + " task in the list.\n");
-            }
-            else {
-                list.add(new Task(userInput));
-                System.out.println("\nadded: "
-                        + userInput
-                        + "\n");
+            catch (ClslException e) {
+                System.out.println("\n" + e.getMessage() + "\n");
             }
             userInput = scanner.nextLine();
         }
