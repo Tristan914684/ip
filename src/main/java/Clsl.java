@@ -27,9 +27,7 @@ public class Clsl {
                 for (int i = 0; i < list.size(); i++) {
                     System.out.println((i + 1)
                             + "."
-                            + list.get(i).getStatusIcon()
-                            + " "
-                            + list.get(i).getName());
+                            + list.get(i).toString());
                 }
                 System.out.println("");
             }
@@ -39,9 +37,7 @@ public class Clsl {
                 list.get(taskNumber).markAsDone();
                 System.out.println("\nNice! I've marked this task as Done:"
                         + "\n"
-                        + list.get(taskNumber).getStatusIcon()
-                        + " "
-                        + list.get(taskNumber).getName()
+                        + list.get(taskNumber).toString()
                         + "\n");
             }
             else if (userInput.startsWith("unmark")) {
@@ -50,9 +46,7 @@ public class Clsl {
                 list.get(taskNumber).unmarkAsDone();
                 System.out.println("\nOK, I've marked this task as not done yet:"
                         + "\n"
-                        + list.get(taskNumber).getStatusIcon()
-                        + " "
-                        + list.get(taskNumber).getName()
+                        + list.get(taskNumber).toString()
                         + "\n");
             }
             else {
