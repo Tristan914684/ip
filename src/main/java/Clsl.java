@@ -49,6 +49,45 @@ public class Clsl {
                         + list.get(taskNumber).toString()
                         + "\n");
             }
+            else if (userInput.startsWith("todo")) {
+                ToDo t = new ToDo(userInput.substring(5));
+                list.add(t);
+                System.out.println("Got it. I've added this task:"
+                        + "\n  "
+                        + t.toString()
+                        + "\n"
+                        + "Now you have "
+                        + list.size()
+                        + " task in the list.\n");
+            }
+            else if (userInput.startsWith("deadline")) {
+                String[] parts = userInput.substring(9).split("/by");
+                Deadline d = new Deadline(parts[0].trim(), parts[1].trim());
+                list.add(d);
+                System.out.println("Got it. I've added this task:"
+                        + "\n  "
+                        + d.toString()
+                        + "\n"
+                        + "Now you have "
+                        + list.size()
+                        + " task in the list.\n");
+            }
+            else if (userInput.startsWith("event")) {
+                String[] parts1 = userInput.substring(6).split("/from");
+                String name = parts1[0].trim();
+                String[] parts2 = parts1[1].split("/to");
+                String from = parts2[0].trim();
+                String to = parts2[1].trim();
+                Event e = new Event(name, from, to);
+                list.add(e);
+                System.out.println("Got it. I've added this task:"
+                        + "\n  "
+                        + e.toString()
+                        + "\n"
+                        + "Now you have "
+                        + list.size()
+                        + " task in the list.\n");
+            }
             else {
                 list.add(new Task(userInput));
                 System.out.println("\nadded: "
