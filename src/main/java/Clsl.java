@@ -13,7 +13,7 @@ public class Clsl {
                 + "What can I do for you?\n";
         String end = "Bye. Hope to see you again soon!";
 
-        List<String> list = new ArrayList<>();
+        List<Task> list = new ArrayList<>();
 
         System.out.println(banner);
         System.out.println(greet);
@@ -23,14 +23,43 @@ public class Clsl {
 
         while (!userInput.equals("bye")) {
             if (userInput.equals("list")) {
+                System.out.println("\nHere are your task in your list:");
                 for (int i = 0; i < list.size(); i++) {
-                    System.out.println((i + 1) + ": " + list.get(i));
+                    System.out.println((i + 1)
+                            + "."
+                            + list.get(i).getStatusIcon()
+                            + " "
+                            + list.get(i).getName());
                 }
                 System.out.println("");
             }
+            else if (userInput.startsWith("mark")) {
+                String[] parts = userInput.split(" ");
+                int taskNumber = Integer.parseInt(parts[1]) - 1;
+                list.get(taskNumber).markAsDone();
+                System.out.println("\nNice! I've marked this task as Done:"
+                        + "\n"
+                        + list.get(taskNumber).getStatusIcon()
+                        + " "
+                        + list.get(taskNumber).getName()
+                        + "\n");
+            }
+            else if (userInput.startsWith("unmark")) {
+                String[] parts = userInput.split(" ");
+                int taskNumber = Integer.parseInt(parts[1]) - 1;
+                list.get(taskNumber).unmarkAsDone();
+                System.out.println("\nOK, I've marked this task as not done yet:"
+                        + "\n"
+                        + list.get(taskNumber).getStatusIcon()
+                        + " "
+                        + list.get(taskNumber).getName()
+                        + "\n");
+            }
             else {
-                list.add(userInput);
-                System.out.println("\nadded: " + userInput);
+                list.add(new Task(userInput));
+                System.out.println("\nadded: "
+                        + userInput
+                        + "\n");
             }
             userInput = scanner.nextLine();
         }
