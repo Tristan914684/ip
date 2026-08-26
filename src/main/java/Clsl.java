@@ -1,9 +1,10 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.IOException;
 
 public class Clsl {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String banner = "  ____ _     _ \n"
                 + " / ___| |___| |\n"
                 + "| |   | / __| |\n"
@@ -14,6 +15,7 @@ public class Clsl {
         String end = "\nBye. Hope to see you again soon!";
 
         List<Task> list = new ArrayList<>();
+        Storage storage = new Storage();
 
         System.out.println(banner);
         System.out.println(greet);
@@ -35,6 +37,7 @@ public class Clsl {
                     String[] parts = userInput.split(" ");
                     int taskNumber = Integer.parseInt(parts[1]) - 1;
                     list.get(taskNumber).markAsDone();
+                    storage.save(list);
                     System.out.println("\nNice! I've marked this task as Done:"
                             + "\n"
                             + list.get(taskNumber).toString()
@@ -43,6 +46,7 @@ public class Clsl {
                     String[] parts = userInput.split(" ");
                     int taskNumber = Integer.parseInt(parts[1]) - 1;
                     list.get(taskNumber).unmarkAsDone();
+                    storage.save(list);
                     System.out.println("\nOK, I've marked this task as not done yet:"
                             + "\n"
                             + list.get(taskNumber).toString()
@@ -54,6 +58,7 @@ public class Clsl {
                     }
                     ToDo t = new ToDo(description);
                     list.add(t);
+                    storage.save(list);
                     System.out.println("Got it. I've added this task:"
                             + "\n  "
                             + t.toString()
@@ -80,6 +85,7 @@ public class Clsl {
                     }
                     Deadline d = new Deadline(name, by);
                     list.add(d);
+                    storage.save(list);
                     System.out.println("Got it. I've added this task:"
                             + "\n  "
                             + d.toString()
@@ -117,6 +123,7 @@ public class Clsl {
                     }
                     Event e = new Event(name, from, to);
                     list.add(e);
+                    storage.save(list);
                     System.out.println("Got it. I've added this task:"
                             + "\n  "
                             + e.toString()
@@ -128,6 +135,7 @@ public class Clsl {
                     String[] parts = userInput.split(" ");
                     int taskNumber = Integer.parseInt(parts[1]) - 1;
                     Task removed = list.remove(taskNumber);
+                    storage.save(list);
                     System.out.println("\nNoted. I've removed this task:"
                             + "\n  "
                             + removed.toString()

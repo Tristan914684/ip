@@ -12,4 +12,8 @@ public class Event extends Task {
     public String toString(){
         return "[E]" + super.toString() + " (from: " + start + " to: " + by + ")";
     }
+    @Override
+    public String getSaveString() {
+        return "E | " + super.getSaveString() + " | " + start + " | " + by;
+    }
 }
