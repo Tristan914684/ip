@@ -1,6 +1,7 @@
-import java.nio.file.Path;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,4 +33,37 @@ public class Storage {
 
         Files.writeString(filePath, contents.toString());
     }
+
+    /**
+     * Loads tasks from the data file.
+     *
+     * @return Tasks recreated from the data file.
+     * @throws IOException If the data file cannot be read.
+     */
+    public List<Task> load() throws IOException {
+        List<String> lines = Files.readAllLines(filePath);
+        List<Task> tasks = new ArrayList<>();
+
+        for (String line : lines) {
+            String[] parts = line.split(" \\| ");
+            Task task;
+
+            if (parts[0].equals("T")) {
+                task = new ToDo(parts[2]);
+            } else if (parts[0].equals("D")) {
+                task = new Deadline(parts[2], parts[3]);
+            } else if (parts[0].equals("E")) {
+                task = new Event(parts[2], parts[3], parts[4]);
+            } else {
+                throw new IOException("Unknown task type in file input");
+            }
+
+            if (parts[1].equals("1")) {
+                task.markAsDone();
+            }
+            tasks.add(task);
+        }
+        return tasks;
+    }
+
 }

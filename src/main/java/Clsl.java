@@ -14,8 +14,8 @@ public class Clsl {
                 + "What can I do for you?\n";
         String end = "\nBye. Hope to see you again soon!";
 
-        List<Task> list = new ArrayList<>();
         Storage storage = new Storage();
+        List<Task> list = storage.load();
 
         System.out.println(banner);
         System.out.println(greet);
