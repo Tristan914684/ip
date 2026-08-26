@@ -39,8 +39,13 @@ public class Storage {
      *
      * @return Tasks recreated from the data file.
      * @throws IOException If the data file cannot be read.
+     * @throws ClslException If the data file contains an unknown task type.
      */
-    public List<Task> load() throws IOException {
+    public List<Task> load() throws IOException, ClslException {
+        if (!Files.exists(filePath)) {
+            return new ArrayList<>();
+        }
+
         List<String> lines = Files.readAllLines(filePath);
         List<Task> tasks = new ArrayList<>();
 
@@ -55,7 +60,7 @@ public class Storage {
             } else if (parts[0].equals("E")) {
                 task = new Event(parts[2], parts[3], parts[4]);
             } else {
-                throw new IOException("Unknown task type in file input");
+                throw new ClslException("Unknown task type in file input");
             }
 
             if (parts[1].equals("1")) {
@@ -65,5 +70,4 @@ public class Storage {
         }
         return tasks;
     }
-
 }

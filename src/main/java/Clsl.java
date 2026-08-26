@@ -4,7 +4,7 @@ import java.util.List;
 import java.io.IOException;
 
 public class Clsl {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         String banner = "  ____ _     _ \n"
                 + " / ___| |___| |\n"
                 + "| |   | / __| |\n"
@@ -15,7 +15,16 @@ public class Clsl {
         String end = "\nBye. Hope to see you again soon!";
 
         Storage storage = new Storage();
-        List<Task> list = storage.load();
+        List<Task> list;
+        try {
+            list = storage.load();
+        } catch (IOException e) {
+            System.out.println("\nUnable to load saved tasks. Starting with an empty task list.\n");
+            list = new ArrayList<>();
+        } catch (ClslException e) {
+            System.out.println("\n" + e.getMessage() + "\n");
+            list = new ArrayList<>();
+        }
 
         System.out.println(banner);
         System.out.println(greet);
@@ -148,6 +157,8 @@ public class Clsl {
                 }
             } catch (ClslException e) {
                 System.out.println("\n" + e.getMessage() + "\n");
+            } catch (IOException e) {
+                System.out.println("\nUnable to save task data. Please try again.\n");
             }
             userInput = scanner.nextLine();
         }
