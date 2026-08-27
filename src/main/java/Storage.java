@@ -11,10 +11,12 @@ public class Storage {
     private final Path filePath;
 
     /**
-     * Creates storage that saves task to the given relative path.
+     * Creates storage that saves tasks to the given file path.
+     *
+     * @param filePath path of the task data file
      */
-    public Storage() {
-        this.filePath = Path.of("data", "csls.txt");
+    public Storage(String filePath) {
+        this.filePath = Path.of(filePath);
     }
 
     /**
