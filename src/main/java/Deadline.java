@@ -15,8 +15,14 @@ public class Deadline extends Task {
     public String toString() {
         return "[D]" + super.toString() + " (by: " + formattedBy + ")";
     }
+
     @Override
     public String getSaveString() {
         return "D | " + super.getSaveString() + " | " + by;
+    }
+
+    @Override
+    public boolean occursOn(LocalDate date) {
+        return by.equals(date);
     }
 }

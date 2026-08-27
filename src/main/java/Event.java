@@ -19,8 +19,14 @@ public class Event extends Task {
     public String toString(){
         return "[E]" + super.toString() + " (from: " + formattedStart + " to: " + formattedBy + ")";
     }
+
     @Override
     public String getSaveString() {
         return "E | " + super.getSaveString() + " | " + start + " | " + by;
+    }
+
+    @Override
+    public boolean occursOn(LocalDate date) {
+        return !date.isBefore(start) && !date.isAfter(by);
     }
 }

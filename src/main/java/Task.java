@@ -40,4 +40,15 @@ public class Task {
         String status = isDone ? "1" : "0";
         return status + " | " + name;
     }
+
+    /**
+     * Returns whether this task occurs on the given date
+     * The base implementation returns false since a plain task has no date.
+     *
+     * @param date The date to check against
+     * @return true if the task occurs on the given date, false otherwise
+     */
+    public boolean occursOn(LocalDate date) {
+        return false;
+    }
 }

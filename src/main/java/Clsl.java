@@ -2,6 +2,8 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
+import java.time.format.DateTimeParseException;
+import java.time.LocalDate;
 
 public class Clsl {
     public static void main(String[] args) {
@@ -152,6 +154,30 @@ public class Clsl {
                             + "Now you have "
                             + list.size()
                             + " tasks in the list.\n");
+                } else if (userInput.startsWith("on")) {
+                    String dateStr = userInput.substring(2).trim();
+                    if (dateStr.isEmpty()) {
+                        throw new ClslException("on what date?");
+                    }
+                    LocalDate queryDate;
+                    try {
+                        queryDate = LocalDate.parse(dateStr);
+                    } catch (DateTimeParseException e) {
+                        throw new ClslException("Please use yyyy-mm-dd format");
+                    }
+
+                    System.out.println("\nHere are the task occuring on " + dateStr + ":");
+                    int count = 0;
+                    for (Task task : list) {
+                        if (task.occursOn(queryDate)) {
+                            count++;
+                            System.out.println(count + "." + task.toString());
+                        }
+                    }
+                    if (count == 0) {
+                        System.out.println("none");
+                    }
+                    System.out.println(" ");
                 } else {
                     throw new ClslException("I don't understand");
                 }
