@@ -1,193 +1,87 @@
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.List;
 import java.io.IOException;
-import java.time.format.DateTimeParseException;
-import java.time.LocalDate;
 
 public class Clsl {
     public static void main(String[] args) {
-        String banner = "  ____ _     _ \n"
-                + " / ___| |___| |\n"
-                + "| |   | / __| |\n"
-                + "| |___| \\__ \\ |\n"
-                + " \\____|_|___/_|\n";
-        String greet = "Hello! I'm Clsl.\n"
-                + "What can I do for you?\n";
-        String end = "\nBye. Hope to see you again soon!";
-
+        Ui ui = new Ui();
         Storage storage = new Storage();
-        List<Task> list;
+        TaskList list;
         try {
-            list = storage.load();
+            list = new TaskList(storage.load());
         } catch (IOException e) {
-            System.out.println("\nUnable to load saved tasks. Starting with an empty task list.\n");
-            list = new ArrayList<>();
+            ui.showLoadingError("Unable to load saved tasks. Starting with an empty task list.");
+            list = new TaskList();
         } catch (ClslException e) {
-            System.out.println("\n" + e.getMessage() + "\n");
-            list = new ArrayList<>();
+            ui.showLoadingError(e.getMessage());
+            list = new TaskList();
         }
 
-        System.out.println(banner);
-        System.out.println(greet);
+        ui.showWelcome();
 
-        Scanner scanner = new Scanner(System.in);
-        String userInput = scanner.nextLine();
-
-        while (!userInput.equals("bye")) {
+        while (true) {
             try {
-                if (userInput.equals("list")) {
-                    System.out.println("\nHere are your tasks in your list:");
-                    for (int i = 0; i < list.size(); i++) {
-                        System.out.println((i + 1)
-                                + "."
-                                + list.get(i).toString());
-                    }
-                    System.out.println("");
-                } else if (userInput.startsWith("mark")) {
-                    String[] parts = userInput.split(" ");
-                    int taskNumber = Integer.parseInt(parts[1]) - 1;
-                    list.get(taskNumber).markAsDone();
-                    storage.save(list);
-                    System.out.println("\nNice! I've marked this task as Done:"
-                            + "\n"
-                            + list.get(taskNumber).toString()
-                            + "\n");
-                } else if (userInput.startsWith("unmark")) {
-                    String[] parts = userInput.split(" ");
-                    int taskNumber = Integer.parseInt(parts[1]) - 1;
-                    list.get(taskNumber).unmarkAsDone();
-                    storage.save(list);
-                    System.out.println("\nOK, I've marked this task as not done yet:"
-                            + "\n"
-                            + list.get(taskNumber).toString()
-                            + "\n");
-                } else if (userInput.startsWith("todo")) {
-                    String description = userInput.substring(4).trim();
-                    if (description.isEmpty()) {
-                        throw new ClslException("todo what exactly?");
-                    }
+                String userInput = ui.readCommand();
+                ParsedCommand parsedCommand = Parser.parse(userInput);
+
+                if (parsedCommand.getType() == ParsedCommand.Type.BYE) {
+                    break;
+                }
+
+                switch (parsedCommand.getType()) {
+                case LIST:
+                    ui.showTaskList(list.asList());
+                    break;
+                case MARK:
+                    int taskNumber = parsedCommand.getTaskIndex();
+                    list.mark(taskNumber);
+                    storage.save(list.asList());
+                    ui.showTaskMarked(list.get(taskNumber));
+                    break;
+                case UNMARK:
+                    taskNumber = parsedCommand.getTaskIndex();
+                    list.unmark(taskNumber);
+                    storage.save(list.asList());
+                    ui.showTaskUnmarked(list.get(taskNumber));
+                    break;
+                case TODO:
+                    String description = parsedCommand.getDescription();
                     ToDo t = new ToDo(description);
                     list.add(t);
-                    storage.save(list);
-                    System.out.println("Got it. I've added this task:"
-                            + "\n  "
-                            + t.toString()
-                            + "\n"
-                            + "Now you have "
-                            + list.size()
-                            + " tasks in the list.\n");
-                } else if (userInput.startsWith("deadline")) {
-                    String description = userInput.substring(8).trim();
-                    if (description.isEmpty()) {
-                        throw new ClslException("deadline of what?");
-                    }
-                    if (!description.contains("/by")) {
-                        throw new ClslException("by when?");
-                    }
-                    String[] parts = description.split("/by", 2);
-                    String name = parts[0].trim();
-                    if (name.isEmpty()) {
-                        throw new ClslException("deadline of what?");
-                    }
-                    String by = parts[1].trim();
-                    if (by.isEmpty()) {
-                        throw new ClslException("by when?");
-                    }
-                    Deadline d = new Deadline(name, by);
+                    storage.save(list.asList());
+                    ui.showTaskAdded(t, list.size());
+                    break;
+                case DEADLINE:
+                    Deadline d = new Deadline(parsedCommand.getDescription(),
+                            parsedCommand.getFirstDate().toString());
                     list.add(d);
-                    storage.save(list);
-                    System.out.println("Got it. I've added this task:"
-                            + "\n  "
-                            + d.toString()
-                            + "\n"
-                            + "Now you have "
-                            + list.size()
-                            + " tasks in the list.\n");
-                } else if (userInput.startsWith("event")) {
-                    String description = userInput.substring(5).trim();
-                    if (description.isEmpty()) {
-                        throw new ClslException("event of what?");
-                    }
-                    if (!description.contains("/from")) {
-                        throw new ClslException("from when?");
-                    }
-                    if (!description.contains("/to")) {
-                        throw new ClslException("to when?");
-                    }
-                    String[] parts1 = description.split("/from", 2);
-                    String name = parts1[0].trim();
-                    if (name.isEmpty()) {
-                        throw new ClslException("event of what?");
-                    }
-                    if (!parts1[1].contains("/to")) {
-                        throw new ClslException("to when?");
-                    }
-                    String[] parts2 = parts1[1].split("/to", 2);
-                    String from = parts2[0].trim();
-                    String to = parts2[1].trim();
-                    if (from.isEmpty()) {
-                        throw new ClslException("from when?");
-                    }
-                    if (to.isEmpty()) {
-                        throw new ClslException("to when?");
-                    }
-                    Event e = new Event(name, from, to);
+                    storage.save(list.asList());
+                    ui.showTaskAdded(d, list.size());
+                    break;
+                case EVENT:
+                    Event e = new Event(parsedCommand.getDescription(),
+                            parsedCommand.getFirstDate().toString(),
+                            parsedCommand.getSecondDate().toString());
                     list.add(e);
-                    storage.save(list);
-                    System.out.println("Got it. I've added this task:"
-                            + "\n  "
-                            + e.toString()
-                            + "\n"
-                            + "Now you have "
-                            + list.size()
-                            + " tasks in the list.\n");
-                } else if (userInput.startsWith("delete")) {
-                    String[] parts = userInput.split(" ");
-                    int taskNumber = Integer.parseInt(parts[1]) - 1;
-                    Task removed = list.remove(taskNumber);
-                    storage.save(list);
-                    System.out.println("\nNoted. I've removed this task:"
-                            + "\n  "
-                            + removed.toString()
-                            + "\n"
-                            + "Now you have "
-                            + list.size()
-                            + " tasks in the list.\n");
-                } else if (userInput.startsWith("on")) {
-                    String dateStr = userInput.substring(2).trim();
-                    if (dateStr.isEmpty()) {
-                        throw new ClslException("on what date?");
-                    }
-                    LocalDate queryDate;
-                    try {
-                        queryDate = LocalDate.parse(dateStr);
-                    } catch (DateTimeParseException e) {
-                        throw new ClslException("Please use yyyy-mm-dd format");
-                    }
-
-                    System.out.println("\nHere are the task occuring on " + dateStr + ":");
-                    int count = 0;
-                    for (Task task : list) {
-                        if (task.occursOn(queryDate)) {
-                            count++;
-                            System.out.println(count + "." + task.toString());
-                        }
-                    }
-                    if (count == 0) {
-                        System.out.println("none");
-                    }
-                    System.out.println(" ");
-                } else {
+                    storage.save(list.asList());
+                    ui.showTaskAdded(e, list.size());
+                    break;
+                case DELETE:
+                    taskNumber = parsedCommand.getTaskIndex();
+                    Task removed = list.delete(taskNumber);
+                    storage.save(list.asList());
+                    ui.showTaskDeleted(removed, list.size());
+                    break;
+                case ON:
+                    ui.showTasksOn(parsedCommand.getFirstDate(), list.asList());
+                    break;
+                default:
                     throw new ClslException("I don't understand");
                 }
             } catch (ClslException e) {
-                System.out.println("\n" + e.getMessage() + "\n");
+                ui.showError(e.getMessage());
             } catch (IOException e) {
-                System.out.println("\nUnable to save task data. Please try again.\n");
+                ui.showError("Unable to save task data. Please try again.");
             }
-            userInput = scanner.nextLine();
         }
-        System.out.println(end);
+        ui.showGoodbye();
     }
 }
