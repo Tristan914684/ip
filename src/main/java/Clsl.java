@@ -1,26 +1,41 @@
 import java.io.IOException;
 
+/**
+ * Coordinates user interaction, command processing, task management, and storage.
+ */
 public class Clsl {
-    public static void main(String[] args) {
-        Ui ui = new Ui();
-        Storage storage = new Storage();
-        TaskList list;
+    private final Storage storage;
+    private final TaskList tasks;
+    private final Ui ui;
+
+    /**
+     * Creates the application and loads its saved tasks.
+     *
+     * @param filePath path of the task data file
+     */
+    public Clsl(String filePath) {
+        ui = new Ui();
+        storage = new Storage(filePath);
+        TaskList loadedTasks;
         try {
-            list = new TaskList(storage.load());
+            loadedTasks = new TaskList(storage.load());
         } catch (IOException e) {
             ui.showLoadingError("Unable to load saved tasks. Starting with an empty task list.");
-            list = new TaskList();
+            loadedTasks = new TaskList();
         } catch (ClslException e) {
             ui.showLoadingError(e.getMessage());
-            list = new TaskList();
+            loadedTasks = new TaskList();
         }
+        tasks = loadedTasks;
+    }
 
+    /** Runs the application's command-processing loop. */
+    public void run() {
         ui.showWelcome();
 
         while (true) {
             try {
-                String userInput = ui.readCommand();
-                ParsedCommand parsedCommand = Parser.parse(userInput);
+                ParsedCommand parsedCommand = Parser.parse(ui.readCommand());
 
                 if (parsedCommand.getType() == ParsedCommand.Type.BYE) {
                     break;
@@ -28,50 +43,50 @@ public class Clsl {
 
                 switch (parsedCommand.getType()) {
                 case LIST:
-                    ui.showTaskList(list.asList());
+                    ui.showTaskList(tasks.asList());
                     break;
                 case MARK:
                     int taskNumber = parsedCommand.getTaskIndex();
-                    list.mark(taskNumber);
-                    storage.save(list.asList());
-                    ui.showTaskMarked(list.get(taskNumber));
+                    tasks.mark(taskNumber);
+                    storage.save(tasks.asList());
+                    ui.showTaskMarked(tasks.get(taskNumber));
                     break;
                 case UNMARK:
                     taskNumber = parsedCommand.getTaskIndex();
-                    list.unmark(taskNumber);
-                    storage.save(list.asList());
-                    ui.showTaskUnmarked(list.get(taskNumber));
+                    tasks.unmark(taskNumber);
+                    storage.save(tasks.asList());
+                    ui.showTaskUnmarked(tasks.get(taskNumber));
                     break;
                 case TODO:
-                    String description = parsedCommand.getDescription();
-                    ToDo t = new ToDo(description);
-                    list.add(t);
-                    storage.save(list.asList());
-                    ui.showTaskAdded(t, list.size());
+                    ToDo todo = new ToDo(parsedCommand.getDescription());
+                    tasks.add(todo);
+                    storage.save(tasks.asList());
+                    ui.showTaskAdded(todo, tasks.size());
                     break;
                 case DEADLINE:
-                    Deadline d = new Deadline(parsedCommand.getDescription(),
+                    Deadline deadline = new Deadline(parsedCommand.getDescription(),
                             parsedCommand.getFirstDate().toString());
-                    list.add(d);
-                    storage.save(list.asList());
-                    ui.showTaskAdded(d, list.size());
+                    tasks.add(deadline);
+                    storage.save(tasks.asList());
+                    ui.showTaskAdded(deadline, tasks.size());
                     break;
                 case EVENT:
-                    Event e = new Event(parsedCommand.getDescription(),
+                    Event event = new Event(parsedCommand.getDescription(),
                             parsedCommand.getFirstDate().toString(),
                             parsedCommand.getSecondDate().toString());
-                    list.add(e);
-                    storage.save(list.asList());
-                    ui.showTaskAdded(e, list.size());
+                    tasks.add(event);
+                    storage.save(tasks.asList());
+                    ui.showTaskAdded(event, tasks.size());
                     break;
                 case DELETE:
                     taskNumber = parsedCommand.getTaskIndex();
-                    Task removed = list.delete(taskNumber);
-                    storage.save(list.asList());
-                    ui.showTaskDeleted(removed, list.size());
+                    Task removed = tasks.delete(taskNumber);
+                    storage.save(tasks.asList());
+                    ui.showTaskDeleted(removed, tasks.size());
                     break;
                 case ON:
-                    ui.showTasksOn(parsedCommand.getFirstDate(), list.asList());
+                    ui.showTasksOn(parsedCommand.getFirstDate(),
+                            tasks.getTasksOn(parsedCommand.getFirstDate()));
                     break;
                 default:
                     throw new ClslException("I don't understand");
@@ -83,5 +98,10 @@ public class Clsl {
             }
         }
         ui.showGoodbye();
+    }
+
+    /** Starts the application with its default task data file. */
+    public static void main(String[] args) {
+        new Clsl("data/csls.txt").run();
     }
 }
