@@ -1,4 +1,16 @@
+package clsl;
+
 import java.io.IOException;
+
+import clsl.parser.ParsedCommand;
+import clsl.parser.Parser;
+import clsl.storage.Storage;
+import clsl.task.Deadline;
+import clsl.task.Event;
+import clsl.task.Task;
+import clsl.task.TaskList;
+import clsl.task.ToDo;
+import clsl.ui.Ui;
 
 /**
  * Coordinates user interaction, command processing, task management, and storage.

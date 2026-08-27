@@ -1,6 +1,10 @@
+package clsl.ui;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
+
+import clsl.task.Task;
 
 /**
  * Handles all console input and output for the Clsl application.
