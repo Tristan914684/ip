@@ -7,14 +7,15 @@ import java.time.format.DateTimeFormatter;
  * Represents a task with a description and completion status.
  */
 public class Task {
-    protected boolean isDone;
-    protected String name;
-    protected static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM d yyyy");
+    protected static final DateTimeFormatter DISPLAY_DATE_FORMAT = DateTimeFormatter.ofPattern("MMM d yyyy");
+
+    private boolean isDone;
+    private final String name;
 
     /**
-     * Creates an incomplete task with the given description.
+     * Creates an incomplete task with the specified description.
      *
-     * @param name description of the task
+     * @param name Description of the task.
      */
     public Task(String name) {
         this.name = name;
@@ -22,9 +23,9 @@ public class Task {
     }
 
     /**
-     * Returns the icon used to display this task's completion status.
+     * Returns the icon representing this task's completion status.
      *
-     * @return {@code [X]} when complete, otherwise {@code [ ]}
+     * @return {@code [X]} when complete, or {@code [ ]} otherwise.
      */
     public String getStatusIcon() {
         return isDone ? "[X]" : "[ ]";
@@ -34,6 +35,7 @@ public class Task {
     public void markAsDone() {
         this.isDone = true;
     }
+
     /** Marks this task as incomplete. */
     public void unmarkAsDone() {
         this.isDone = false;
@@ -42,16 +44,16 @@ public class Task {
     /**
      * Returns this task's description.
      *
-     * @return the task description
+     * @return The task description.
      */
     public String getName() {
-        return this.name;
+        return name;
     }
 
     /**
-     * Returns a display representation of this task.
+     * Returns this task in its display format.
      *
-     * @return the completion icon followed by the description
+     * @return The completion icon followed by the description.
      */
     @Override
     public String toString() {
@@ -69,11 +71,11 @@ public class Task {
     }
 
     /**
-     * Returns whether this task occurs on the given date
-     * The base implementation returns false since a plain task has no date.
+     * Returns whether this task occurs on the given date.
+     * The base implementation returns {@code false} because a plain task has no date.
      *
-     * @param date The date to check against
-     * @return true if the task occurs on the given date, false otherwise
+     * @param date The date to check.
+     * @return {@code true} if the task occurs on the given date, or {@code false} otherwise.
      */
     public boolean occursOn(LocalDate date) {
         return false;

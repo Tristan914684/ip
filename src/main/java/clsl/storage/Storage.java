@@ -21,7 +21,7 @@ public class Storage {
     /**
      * Creates storage that saves tasks to the given file path.
      *
-     * @param filePath path of the task data file
+     * @param filePath Path of the task data file.
      */
     public Storage(String filePath) {
         this.filePath = Path.of(filePath);
@@ -30,8 +30,8 @@ public class Storage {
     /**
      * Saves all tasks to the data file.
      *
-     * @param tasks tasks currently in the task list.
-     * @throws IOException if the file cannot be written.
+     * @param tasks Tasks currently in the task list.
+     * @throws IOException If the file cannot be written.
      */
     public void save(List<Task> tasks) throws IOException {
         Files.createDirectories(filePath.getParent());

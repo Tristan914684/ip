@@ -5,19 +5,14 @@ package clsl.task;
  */
 public class ToDo extends Task {
     /**
-     * Creates an incomplete to-do task.
+     * Creates an incomplete to-do task with the specified description.
      *
-     * @param name description of the task
+     * @param name Description of the task.
      */
     public ToDo(String name) {
         super(name);
     }
 
-    /**
-     * Returns this to-do task in its display format.
-     *
-     * @return the task prefixed with its to-do marker
-     */
     @Override
     public String toString() {
         return "[T]" + super.toString();
@@ -26,7 +21,7 @@ public class ToDo extends Task {
     /**
      * Returns this to-do task in the storage format.
      *
-     * @return the task prefixed with its storage type marker
+     * @return The task prefixed with its to-do marker.
      */
     @Override
     public String getSaveString() {

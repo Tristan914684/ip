@@ -5,9 +5,9 @@ package clsl;
  */
 public class ClslException extends Exception {
     /**
-     * Creates an exception with a message suitable for showing to the user.
+     * Creates an exception with the specified user-facing message.
      *
-     * @param message explanation of the error
+     * @param message Explanation of the error.
      */
     public ClslException(String message) {
         super(message);
