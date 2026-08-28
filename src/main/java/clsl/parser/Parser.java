@@ -53,6 +53,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses the description and due date supplied to a deadline command.
+     *
+     * @param arguments text after the {@code deadline} command word
+     * @return the parsed deadline command
+     * @throws ClslException if either the description or due date is invalid
+     */
     private static ParsedCommand parseDeadline(String arguments) throws ClslException {
         String[] deadlineParts = arguments.split("\\s*/by\\s*", 2);
         String description = requireDescription(deadlineParts[0], "deadline of what?");
@@ -64,6 +71,13 @@ public class Parser {
         return ParsedCommand.withDescriptionAndDate(ParsedCommand.Type.DEADLINE, description, byDate);
     }
 
+    /**
+     * Parses the description, start date, and end date supplied to an event command.
+     *
+     * @param arguments text after the {@code event} command word
+     * @return the parsed event command
+     * @throws ClslException if any event detail is missing or invalid
+     */
     private static ParsedCommand parseEvent(String arguments) throws ClslException {
         String[] fromParts = arguments.split("\\s*/from\\s*", 2);
         String description = requireDescription(fromParts[0], "event of what?");
@@ -81,12 +95,26 @@ public class Parser {
         return ParsedCommand.withEventDetails(description, startDate, endDate);
     }
 
+    /**
+     * Ensures that a command that accepts no arguments was entered without any.
+     *
+     * @param arguments text after the command word
+     * @throws ClslException if arguments were provided
+     */
     private static void requireNoArguments(String arguments) throws ClslException {
         if (!arguments.isEmpty()) {
             throw new ClslException("I don't understand");
         }
     }
 
+    /**
+     * Validates and trims a required task description.
+     *
+     * @param description description text to validate
+     * @param errorMessage message to display when the description is blank
+     * @return the trimmed description
+     * @throws ClslException if the description is blank
+     */
     private static String requireDescription(String description, String errorMessage) throws ClslException {
         if (description.isBlank()) {
             throw new ClslException(errorMessage);
@@ -94,6 +122,13 @@ public class Parser {
         return description.trim();
     }
 
+    /**
+     * Converts the user's one-based task number to the application's zero-based index.
+     *
+     * @param taskNumberText task number entered by the user
+     * @return the corresponding zero-based task index
+     * @throws ClslException if the task number is absent, non-numeric, or less than one
+     */
     private static int parseTaskIndex(String taskNumberText) throws ClslException {
         if (taskNumberText.isBlank()) {
             throw new ClslException("task number missing");
@@ -110,6 +145,14 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses an ISO-8601 date after ensuring that date text was provided.
+     *
+     * @param dateText date text to parse
+     * @param missingDateMessage message to display when date text is blank
+     * @return the parsed date
+     * @throws ClslException if the date is blank or not in {@code yyyy-mm-dd} format
+     */
     private static LocalDate parseDate(String dateText, String missingDateMessage) throws ClslException {
         if (dateText.isBlank()) {
             throw new ClslException(missingDateMessage);
