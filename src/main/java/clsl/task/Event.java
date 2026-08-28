@@ -1,34 +1,55 @@
 package clsl.task;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
+/**
+ * Represents a task occurring from a start date through an end date.
+ */
 public class Event extends Task {
-    protected LocalDate start;
-    protected String formattedStart;
-    protected LocalDate by;
-    protected String formattedBy;
+    private final LocalDate startDate;
+    private final String formattedStartDate;
+    private final LocalDate endDate;
+    private final String formattedEndDate;
 
-    public Event(String name, String start, String by) {
+    /**
+     * Creates an incomplete event task.
+     *
+     * @param name Description of the task.
+     * @param startDate Start date in {@code yyyy-mm-dd} format.
+     * @param endDate End date in {@code yyyy-mm-dd} format.
+     */
+    public Event(String name, String startDate, String endDate) {
         super(name);
-        this.start = LocalDate.parse(start);
-        this.formattedStart = this.start.format(OUTPUT_FORMAT);
-        this.by = LocalDate.parse(by);
-        this.formattedBy = this.by.format(OUTPUT_FORMAT);
+        this.startDate = LocalDate.parse(startDate);
+        this.formattedStartDate = this.startDate.format(DISPLAY_DATE_FORMAT);
+        this.endDate = LocalDate.parse(endDate);
+        this.formattedEndDate = this.endDate.format(DISPLAY_DATE_FORMAT);
     }
 
     @Override
-    public String toString(){
-        return "[E]" + super.toString() + " (from: " + formattedStart + " to: " + formattedBy + ")";
+    public String toString() {
+        return "[E]" + super.toString() + " (from: " + formattedStartDate
+                + " to: " + formattedEndDate + ")";
     }
 
+    /**
+     * Returns this event in the storage format.
+     *
+     * @return The task prefixed with its event marker and date range.
+     */
     @Override
     public String getSaveString() {
-        return "E | " + super.getSaveString() + " | " + start + " | " + by;
+        return "E | " + super.getSaveString() + " | " + startDate + " | " + endDate;
     }
 
+    /**
+     * Returns whether this event occurs on the specified date, inclusively.
+     *
+     * @param date Date to check.
+     * @return {@code true} if the date is within the event's range, or {@code false} otherwise.
+     */
     @Override
     public boolean occursOn(LocalDate date) {
-        return !date.isBefore(start) && !date.isAfter(by);
+        return !date.isBefore(startDate) && !date.isAfter(endDate);
     }
 }

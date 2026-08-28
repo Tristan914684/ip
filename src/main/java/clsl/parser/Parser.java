@@ -16,9 +16,9 @@ public class Parser {
     /**
      * Parses a full command into the information needed to execute it.
      *
-     * @param userInput complete command entered by the user
-     * @return a structured representation of the command
-     * @throws ClslException if the command is incomplete or invalid
+     * @param userInput Complete command entered by the user.
+     * @return A structured representation of the command.
+     * @throws ClslException If the command is incomplete or invalid.
      */
     public static ParsedCommand parse(String userInput) throws ClslException {
         String[] commandParts = userInput.trim().split("\\s+", 2);
@@ -33,11 +33,14 @@ public class Parser {
             requireNoArguments(arguments);
             return ParsedCommand.of(ParsedCommand.Type.BYE);
         case "mark":
-            return ParsedCommand.withTaskIndex(ParsedCommand.Type.MARK, parseTaskIndex(arguments));
+            return ParsedCommand.withTaskIndex(ParsedCommand.Type.MARK,
+                    parseTaskIndex(arguments));
         case "unmark":
-            return ParsedCommand.withTaskIndex(ParsedCommand.Type.UNMARK, parseTaskIndex(arguments));
+            return ParsedCommand.withTaskIndex(ParsedCommand.Type.UNMARK,
+                    parseTaskIndex(arguments));
         case "delete":
-            return ParsedCommand.withTaskIndex(ParsedCommand.Type.DELETE, parseTaskIndex(arguments));
+            return ParsedCommand.withTaskIndex(ParsedCommand.Type.DELETE,
+                    parseTaskIndex(arguments));
         case "todo":
             return ParsedCommand.withDescription(ParsedCommand.Type.TODO,
                     requireDescription(arguments, "todo what exactly?"));
@@ -46,7 +49,8 @@ public class Parser {
         case "event":
             return parseEvent(arguments);
         case "on":
-            return ParsedCommand.withDescriptionAndDate(ParsedCommand.Type.ON, null,
+            return ParsedCommand.withDescriptionAndDate(ParsedCommand.Type.ON,
+                    null,
                     parseDate(arguments, "on what date?"));
         default:
             throw new ClslException("I don't understand");
@@ -61,7 +65,8 @@ public class Parser {
         }
 
         LocalDate byDate = parseDate(deadlineParts[1], "by when?");
-        return ParsedCommand.withDescriptionAndDate(ParsedCommand.Type.DEADLINE, description, byDate);
+        return ParsedCommand.withDescriptionAndDate(ParsedCommand.Type.DEADLINE,
+                description, byDate);
     }
 
     private static ParsedCommand parseEvent(String arguments) throws ClslException {
@@ -87,7 +92,8 @@ public class Parser {
         }
     }
 
-    private static String requireDescription(String description, String errorMessage) throws ClslException {
+    private static String requireDescription(String description, String errorMessage)
+            throws ClslException {
         if (description.isBlank()) {
             throw new ClslException(errorMessage);
         }
@@ -110,7 +116,8 @@ public class Parser {
         }
     }
 
-    private static LocalDate parseDate(String dateText, String missingDateMessage) throws ClslException {
+    private static LocalDate parseDate(String dateText, String missingDateMessage)
+            throws ClslException {
         if (dateText.isBlank()) {
             throw new ClslException(missingDateMessage);
         }

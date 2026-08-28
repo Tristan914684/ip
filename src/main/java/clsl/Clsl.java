@@ -23,7 +23,7 @@ public class Clsl {
     /**
      * Creates the application and loads its saved tasks.
      *
-     * @param filePath path of the task data file
+     * @param filePath Path of the task data file.
      */
     public Clsl(String filePath) {
         ui = new Ui();
@@ -57,32 +57,36 @@ public class Clsl {
                 case LIST:
                     ui.showTaskList(tasks.asList());
                     break;
-                case MARK:
-                    int taskNumber = parsedCommand.getTaskIndex();
-                    tasks.mark(taskNumber);
+                case MARK: {
+                    int taskIndex = parsedCommand.getTaskIndex();
+                    tasks.mark(taskIndex);
                     storage.save(tasks.asList());
-                    ui.showTaskMarked(tasks.get(taskNumber));
+                    ui.showTaskMarked(tasks.get(taskIndex));
                     break;
-                case UNMARK:
-                    taskNumber = parsedCommand.getTaskIndex();
-                    tasks.unmark(taskNumber);
+                }
+                case UNMARK: {
+                    int taskIndex = parsedCommand.getTaskIndex();
+                    tasks.unmark(taskIndex);
                     storage.save(tasks.asList());
-                    ui.showTaskUnmarked(tasks.get(taskNumber));
+                    ui.showTaskUnmarked(tasks.get(taskIndex));
                     break;
-                case TODO:
+                }
+                case TODO: {
                     ToDo todo = new ToDo(parsedCommand.getDescription());
                     tasks.add(todo);
                     storage.save(tasks.asList());
                     ui.showTaskAdded(todo, tasks.size());
                     break;
-                case DEADLINE:
+                }
+                case DEADLINE: {
                     Deadline deadline = new Deadline(parsedCommand.getDescription(),
                             parsedCommand.getFirstDate().toString());
                     tasks.add(deadline);
                     storage.save(tasks.asList());
                     ui.showTaskAdded(deadline, tasks.size());
                     break;
-                case EVENT:
+                }
+                case EVENT: {
                     Event event = new Event(parsedCommand.getDescription(),
                             parsedCommand.getFirstDate().toString(),
                             parsedCommand.getSecondDate().toString());
@@ -90,12 +94,14 @@ public class Clsl {
                     storage.save(tasks.asList());
                     ui.showTaskAdded(event, tasks.size());
                     break;
-                case DELETE:
-                    taskNumber = parsedCommand.getTaskIndex();
-                    Task removed = tasks.delete(taskNumber);
+                }
+                case DELETE: {
+                    int taskIndex = parsedCommand.getTaskIndex();
+                    Task removed = tasks.delete(taskIndex);
                     storage.save(tasks.asList());
                     ui.showTaskDeleted(removed, tasks.size());
                     break;
+                }
                 case ON:
                     ui.showTasksOn(parsedCommand.getFirstDate(),
                             tasks.getTasksOn(parsedCommand.getFirstDate()));

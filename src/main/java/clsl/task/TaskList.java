@@ -18,7 +18,7 @@ public class TaskList {
     /**
      * Creates a task list containing tasks loaded from storage.
      *
-     * @param tasks tasks to include in this task list
+     * @param tasks Tasks to include in this task list.
      */
     public TaskList(List<Task> tasks) {
         this.tasks = new ArrayList<>(tasks);
@@ -32,8 +32,8 @@ public class TaskList {
     /**
      * Removes and returns the task at the specified zero-based index.
      *
-     * @param index zero-based index of the task to remove
-     * @return the removed task
+     * @param index Zero-based index of the task to remove.
+     * @return The removed task.
      */
     public Task delete(int index) {
         return tasks.remove(index);
@@ -62,8 +62,8 @@ public class TaskList {
     /**
      * Returns the tasks that occur on the given date.
      *
-     * @param date date to check
-     * @return tasks that occur on the given date
+     * @param date Date to check.
+     * @return Tasks that occur on the given date.
      */
     public List<Task> getTasksOn(LocalDate date) {
         List<Task> matchingTasks = new ArrayList<>();
@@ -78,7 +78,7 @@ public class TaskList {
     /**
      * Returns an immutable view of the tasks for displaying or saving them.
      *
-     * @return the tasks in this task list
+     * @return The tasks in this task list.
      */
     public List<Task> asList() {
         return List.copyOf(tasks);

@@ -3,31 +3,58 @@ package clsl.task;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Represents a task with a description and completion status.
+ */
 public class Task {
-    protected boolean isDone;
-    protected String name;
-    protected static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM d yyyy");
+    protected static final DateTimeFormatter DISPLAY_DATE_FORMAT = DateTimeFormatter.ofPattern("MMM d yyyy");
 
+    private boolean isDone;
+    private final String name;
+
+    /**
+     * Creates an incomplete task with the specified description.
+     *
+     * @param name Description of the task.
+     */
     public Task(String name) {
         this.name = name;
         this.isDone = false;
     }
 
+    /**
+     * Returns the icon representing this task's completion status.
+     *
+     * @return {@code [X]} when complete, or {@code [ ]} otherwise.
+     */
     public String getStatusIcon() {
         return isDone ? "[X]" : "[ ]";
     }
 
+    /** Marks this task as complete. */
     public void markAsDone() {
         this.isDone = true;
     }
+
+    /** Marks this task as incomplete. */
     public void unmarkAsDone() {
         this.isDone = false;
     }
 
+    /**
+     * Returns this task's description.
+     *
+     * @return The task description.
+     */
     public String getName() {
-        return this.name;
+        return name;
     }
 
+    /**
+     * Returns this task in its display format.
+     *
+     * @return The completion icon followed by the description.
+     */
     @Override
     public String toString() {
         return getStatusIcon() + " " + name;
@@ -44,11 +71,11 @@ public class Task {
     }
 
     /**
-     * Returns whether this task occurs on the given date
-     * The base implementation returns false since a plain task has no date.
+     * Returns whether this task occurs on the given date.
+     * The base implementation returns {@code false} because a plain task has no date.
      *
-     * @param date The date to check against
-     * @return true if the task occurs on the given date, false otherwise
+     * @param date The date to check.
+     * @return {@code true} if the task occurs on the given date, or {@code false} otherwise.
      */
     public boolean occursOn(LocalDate date) {
         return false;
