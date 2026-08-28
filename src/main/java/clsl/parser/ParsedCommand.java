@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class ParsedCommand {
     /** The commands supported by the application. */
     public enum Type {
-        LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, ON, BYE
+        LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, ON, FIND, BYE
     }
 
     private final Type type;

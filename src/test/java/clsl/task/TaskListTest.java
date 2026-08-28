@@ -36,4 +36,13 @@ public class TaskListTest {
 
         assertEquals(List.of(), taskList.getTasksOn(LocalDate.of(2026, 9, 2)));
     }
+
+    @Test
+    void findTasks_matchingDescriptions_returnsMatchingTasksIgnoringCase() {
+        ToDo readBook = new ToDo("read book");
+        Deadline returnBook = new Deadline("return book", "2026-09-02");
+        TaskList taskList = new TaskList(List.of(readBook, returnBook, new ToDo("write report")));
+
+        assertEquals(List.of(readBook, returnBook), taskList.findTasks("BOOK"));
+    }
 }

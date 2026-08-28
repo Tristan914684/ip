@@ -36,6 +36,14 @@ public class ParserTest {
     }
 
     @Test
+    void parse_findCommand_returnsKeyword() throws Exception {
+        ParsedCommand command = Parser.parse("find book");
+
+        assertEquals(ParsedCommand.Type.FIND, command.getType());
+        assertEquals("book", command.getDescription());
+    }
+
+    @Test
     void parse_markWithInvalidTaskNumber_throwsHelpfulException() {
         ClslException exception = assertThrows(ClslException.class, () -> Parser.parse("mark zero"));
 
@@ -47,5 +55,12 @@ public class ParserTest {
         ClslException exception = assertThrows(ClslException.class, () -> Parser.parse("todo"));
 
         assertEquals("todo what exactly?", exception.getMessage());
+    }
+
+    @Test
+    void parse_findWithoutKeyword_throwsHelpfulException() {
+        ClslException exception = assertThrows(ClslException.class, () -> Parser.parse("find"));
+
+        assertEquals("find what?", exception.getMessage());
     }
 }

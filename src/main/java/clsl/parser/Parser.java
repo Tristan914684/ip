@@ -48,6 +48,9 @@ public class Parser {
         case "on":
             return ParsedCommand.withDescriptionAndDate(ParsedCommand.Type.ON, null,
                     parseDate(arguments, "on what date?"));
+        case "find":
+            return ParsedCommand.withDescription(ParsedCommand.Type.FIND,
+                    requireDescription(arguments, "find what?"));
         default:
             throw new ClslException("I don't understand");
         }

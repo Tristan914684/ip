@@ -100,6 +100,9 @@ public class Clsl {
                     ui.showTasksOn(parsedCommand.getFirstDate(),
                             tasks.getTasksOn(parsedCommand.getFirstDate()));
                     break;
+                case FIND:
+                    ui.showMatchingTasks(tasks.findTasks(parsedCommand.getDescription()));
+                    break;
                 default:
                     throw new ClslException("I don't understand");
                 }

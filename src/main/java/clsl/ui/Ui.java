@@ -60,6 +60,15 @@ public class Ui {
         System.out.println();
     }
 
+    /** Displays tasks whose descriptions match a find keyword. */
+    public void showMatchingTasks(List<Task> tasks) {
+        System.out.println("\nHere are the matching tasks in your list:");
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.println((i + 1) + "." + tasks.get(i));
+        }
+        System.out.println();
+    }
+
     /** Displays confirmation that a task has been marked as complete. */
     public void showTaskMarked(Task task) {
         System.out.println("\nNice! I've marked this task as Done:\n" + task + "\n");
