@@ -35,5 +35,6 @@ For all Java code created, edited, or reviewed in this project, follow the proje
 ## Git
 
 Use lightweight tags unless the user requests an annotated tag.
+Before creating a commit or branch, follow the project skill at `.codex/skills/seedu-git-standard/SKILL.md`.
 When proposing or creating a commit message, include enough detail to explain the rationale for the change.
 Do not commit or push unless explicitly asked.
