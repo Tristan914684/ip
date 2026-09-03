@@ -93,7 +93,7 @@ public class Ui {
 
     /** Displays the supplied tasks as tasks occurring on the specified date. */
     public void showTasksOn(LocalDate date, List<Task> tasks) {
-        System.out.println("\nHere are the task occuring on " + date + ":");
+        System.out.println("\nHere are the tasks occurring on " + date + ":");
         for (int i = 0; i < tasks.size(); i++) {
             System.out.println((i + 1) + "." + tasks.get(i));
         }
