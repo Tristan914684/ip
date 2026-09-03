@@ -3,8 +3,9 @@ package clsl.parser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import clsl.ClslException;
 import org.junit.jupiter.api.Test;
+
+import clsl.ClslException;
 
 /** Tests the conversion of user input into parsed commands. */
 public class ParserTest {

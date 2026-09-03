@@ -54,63 +54,63 @@ public class Clsl {
                 }
 
                 switch (parsedCommand.getType()) {
-                case LIST:
-                    ui.showTaskList(tasks.asList());
-                    break;
-                case MARK: {
-                    int taskIndex = parsedCommand.getTaskIndex();
-                    tasks.mark(taskIndex);
-                    storage.save(tasks.asList());
-                    ui.showTaskMarked(tasks.get(taskIndex));
-                    break;
-                }
-                case UNMARK: {
-                    int taskIndex = parsedCommand.getTaskIndex();
-                    tasks.unmark(taskIndex);
-                    storage.save(tasks.asList());
-                    ui.showTaskUnmarked(tasks.get(taskIndex));
-                    break;
-                }
-                case TODO: {
-                    ToDo todo = new ToDo(parsedCommand.getDescription());
-                    tasks.add(todo);
-                    storage.save(tasks.asList());
-                    ui.showTaskAdded(todo, tasks.size());
-                    break;
-                }
-                case DEADLINE: {
-                    Deadline deadline = new Deadline(parsedCommand.getDescription(),
-                            parsedCommand.getFirstDate().toString());
-                    tasks.add(deadline);
-                    storage.save(tasks.asList());
-                    ui.showTaskAdded(deadline, tasks.size());
-                    break;
-                }
-                case EVENT: {
-                    Event event = new Event(parsedCommand.getDescription(),
-                            parsedCommand.getFirstDate().toString(),
-                            parsedCommand.getSecondDate().toString());
-                    tasks.add(event);
-                    storage.save(tasks.asList());
-                    ui.showTaskAdded(event, tasks.size());
-                    break;
-                }
-                case DELETE: {
-                    int taskIndex = parsedCommand.getTaskIndex();
-                    Task removed = tasks.delete(taskIndex);
-                    storage.save(tasks.asList());
-                    ui.showTaskDeleted(removed, tasks.size());
-                    break;
-                }
-                case ON:
-                    ui.showTasksOn(parsedCommand.getFirstDate(),
-                            tasks.getTasksOn(parsedCommand.getFirstDate()));
-                    break;
-                case FIND:
-                    ui.showMatchingTasks(tasks.findTasks(parsedCommand.getDescription()));
-                    break;
-                default:
-                    throw new ClslException("I don't understand");
+                    case LIST:
+                        ui.showTaskList(tasks.asList());
+                        break;
+                    case MARK: {
+                        int taskIndex = parsedCommand.getTaskIndex();
+                        tasks.mark(taskIndex);
+                        storage.save(tasks.asList());
+                        ui.showTaskMarked(tasks.get(taskIndex));
+                        break;
+                    }
+                    case UNMARK: {
+                        int taskIndex = parsedCommand.getTaskIndex();
+                        tasks.unmark(taskIndex);
+                        storage.save(tasks.asList());
+                        ui.showTaskUnmarked(tasks.get(taskIndex));
+                        break;
+                    }
+                    case TODO: {
+                        ToDo todo = new ToDo(parsedCommand.getDescription());
+                        tasks.add(todo);
+                        storage.save(tasks.asList());
+                        ui.showTaskAdded(todo, tasks.size());
+                        break;
+                    }
+                    case DEADLINE: {
+                        Deadline deadline = new Deadline(parsedCommand.getDescription(),
+                                parsedCommand.getFirstDate().toString());
+                        tasks.add(deadline);
+                        storage.save(tasks.asList());
+                        ui.showTaskAdded(deadline, tasks.size());
+                        break;
+                    }
+                    case EVENT: {
+                        Event event = new Event(parsedCommand.getDescription(),
+                                parsedCommand.getFirstDate().toString(),
+                                parsedCommand.getSecondDate().toString());
+                        tasks.add(event);
+                        storage.save(tasks.asList());
+                        ui.showTaskAdded(event, tasks.size());
+                        break;
+                    }
+                    case DELETE: {
+                        int taskIndex = parsedCommand.getTaskIndex();
+                        Task removed = tasks.delete(taskIndex);
+                        storage.save(tasks.asList());
+                        ui.showTaskDeleted(removed, tasks.size());
+                        break;
+                    }
+                    case ON:
+                        ui.showTasksOn(parsedCommand.getFirstDate(),
+                                tasks.getTasksOn(parsedCommand.getFirstDate()));
+                        break;
+                    case FIND:
+                        ui.showMatchingTasks(tasks.findTasks(parsedCommand.getDescription()));
+                        break;
+                    default:
+                        throw new ClslException("I don't understand");
                 }
             } catch (ClslException e) {
                 ui.showError(e.getMessage());

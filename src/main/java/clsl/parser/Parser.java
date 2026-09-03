@@ -26,37 +26,37 @@ public class Parser {
         String arguments = commandParts.length == 2 ? commandParts[1].trim() : "";
 
         switch (commandWord) {
-        case "list":
-            requireNoArguments(arguments);
-            return ParsedCommand.of(ParsedCommand.Type.LIST);
-        case "bye":
-            requireNoArguments(arguments);
-            return ParsedCommand.of(ParsedCommand.Type.BYE);
-        case "mark":
-            return ParsedCommand.withTaskIndex(ParsedCommand.Type.MARK,
-                    parseTaskIndex(arguments));
-        case "unmark":
-            return ParsedCommand.withTaskIndex(ParsedCommand.Type.UNMARK,
-                    parseTaskIndex(arguments));
-        case "delete":
-            return ParsedCommand.withTaskIndex(ParsedCommand.Type.DELETE,
-                    parseTaskIndex(arguments));
-        case "todo":
-            return ParsedCommand.withDescription(ParsedCommand.Type.TODO,
-                    requireDescription(arguments, "todo what exactly?"));
-        case "deadline":
-            return parseDeadline(arguments);
-        case "event":
-            return parseEvent(arguments);
-        case "on":
-            return ParsedCommand.withDescriptionAndDate(ParsedCommand.Type.ON,
-                    null,
-                    parseDate(arguments, "on what date?"));
-        case "find":
-            return ParsedCommand.withDescription(ParsedCommand.Type.FIND,
-                    requireDescription(arguments, "find what?"));
-        default:
-            throw new ClslException("I don't understand");
+            case "list":
+                requireNoArguments(arguments);
+                return ParsedCommand.of(ParsedCommand.Type.LIST);
+            case "bye":
+                requireNoArguments(arguments);
+                return ParsedCommand.of(ParsedCommand.Type.BYE);
+            case "mark":
+                return ParsedCommand.withTaskIndex(ParsedCommand.Type.MARK,
+                        parseTaskIndex(arguments));
+            case "unmark":
+                return ParsedCommand.withTaskIndex(ParsedCommand.Type.UNMARK,
+                        parseTaskIndex(arguments));
+            case "delete":
+                return ParsedCommand.withTaskIndex(ParsedCommand.Type.DELETE,
+                        parseTaskIndex(arguments));
+            case "todo":
+                return ParsedCommand.withDescription(ParsedCommand.Type.TODO,
+                        requireDescription(arguments, "todo what exactly?"));
+            case "deadline":
+                return parseDeadline(arguments);
+            case "event":
+                return parseEvent(arguments);
+            case "on":
+                return ParsedCommand.withDescriptionAndDate(ParsedCommand.Type.ON,
+                        null,
+                        parseDate(arguments, "on what date?"));
+            case "find":
+                return ParsedCommand.withDescription(ParsedCommand.Type.FIND,
+                        requireDescription(arguments, "find what?"));
+            default:
+                throw new ClslException("I don't understand");
         }
     }
 
