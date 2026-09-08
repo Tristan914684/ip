@@ -32,6 +32,9 @@ public class MainController {
     /** Initializes the application logic and displays the welcome message. */
     @FXML
     private void initialize() {
+        assert scrollPane != null : "FXML must inject scrollPane";
+        assert dialogContainer != null : "FXML must inject dialogContainer";
+        assert userInput != null : "FXML must inject userInput";
         clsl = new Clsl("data/csls.txt");
         clslAvatar = loadImage("/images/pig.jpg");
         userAvatar = loadImage("/images/dog.jpg");
