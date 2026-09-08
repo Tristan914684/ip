@@ -109,7 +109,7 @@ public class Clsl {
         return ui.formatTaskUnmarked(tasks.get(taskIndex));
     }
 
-    private String addTask(Task task) throws IOException {
+    private String addTask(Task task) throws IOException, ClslException {
         tasks.add(task);
         storage.save(tasks.asList());
         return ui.formatTaskAdded(task, tasks.size());

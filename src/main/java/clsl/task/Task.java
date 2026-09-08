@@ -2,6 +2,7 @@ package clsl.task;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
  * Represents a task with a description and completion status.
@@ -48,6 +49,28 @@ public class Task {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Returns whether this task is a duplicate of the specified task.
+     *
+     * @param other Task to compare with this task.
+     * @return {@code true} if both tasks have the same type-specific details, or {@code false}
+     *         otherwise.
+     */
+    public boolean isDuplicateOf(Task other) {
+        return getClass().equals(other.getClass())
+                && normalizeName(name).equals(normalizeName(other.name));
+    }
+
+    /**
+     * Returns a task description in the format used for duplicate comparison.
+     *
+     * @param description Description to normalize.
+     * @return A lowercase description with whitespace removed.
+     */
+    protected static String normalizeName(String description) {
+        return description.replaceAll("\\s+", "").toLowerCase(Locale.ROOT);
     }
 
     /**

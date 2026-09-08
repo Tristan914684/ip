@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import clsl.ClslException;
+
 /**
  * Stores and manages the tasks in the application.
  */
@@ -25,8 +27,18 @@ public class TaskList {
         this.tasks = new ArrayList<>(tasks);
     }
 
-    /** Adds a task to the end of the list. */
-    public void add(Task task) {
+    /**
+     * Adds a task to the end of the list if it is not already present.
+     *
+     * @param task Task to add.
+     * @throws ClslException If an equivalent task is already in the list.
+     */
+    public void add(Task task) throws ClslException {
+        for (Task existingTask : tasks) {
+            if (existingTask.isDuplicateOf(task)) {
+                throw new ClslException("already added");
+            }
+        }
         tasks.add(task);
     }
 

@@ -1,11 +1,14 @@
 package clsl.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+
+import clsl.ClslException;
 
 /** Tests task-list operations that depend on a task's type and dates. */
 public class TaskListTest {
@@ -44,5 +47,53 @@ public class TaskListTest {
         TaskList taskList = new TaskList(List.of(readBook, returnBook, new ToDo("write report")));
 
         assertEquals(List.of(readBook, returnBook), taskList.findTasks("BOOK"));
+    }
+
+    @Test
+    void add_todoWithDifferentCaseAndWhitespace_throwsException() throws ClslException {
+        TaskList taskList = new TaskList(List.of(new ToDo("Buy milk")));
+
+        ClslException exception = assertThrows(ClslException.class, () ->
+                taskList.add(new ToDo("BU Y   MILK")));
+
+        assertEquals("already added", exception.getMessage());
+        assertEquals(1, taskList.size());
+    }
+
+    @Test
+    void add_sameDeadlineDetailsIgnoringCase_throwsException() throws ClslException {
+        TaskList taskList = new TaskList(List.of(new Deadline("Submit report", "2026-09-10")));
+
+        assertThrows(ClslException.class, () ->
+                taskList.add(new Deadline("submit REPORT", "2026-09-10")));
+    }
+
+    @Test
+    void add_sameEventDetailsIgnoringCase_throwsException() throws ClslException {
+        TaskList taskList = new TaskList(List.of(
+                new Event("Team meeting", "2026-09-10", "2026-09-11")));
+
+        assertThrows(ClslException.class, () ->
+                taskList.add(new Event("team MEETING", "2026-09-10", "2026-09-11")));
+    }
+
+    @Test
+    void add_differentTypeOrDate_addsTask() throws ClslException {
+        TaskList taskList = new TaskList(List.of(new ToDo("Buy milk")));
+
+        taskList.add(new Deadline("Buy milk", "2026-09-10"));
+        taskList.add(new ToDo("Buy milk on Friday"));
+
+        assertEquals(3, taskList.size());
+    }
+
+    @Test
+    void constructor_existingDuplicates_preservesAllTasks() {
+        Task firstTask = new ToDo("Buy milk");
+        Task secondTask = new ToDo("buy milk");
+
+        TaskList taskList = new TaskList(List.of(firstTask, secondTask));
+
+        assertEquals(List.of(firstTask, secondTask), taskList.asList());
     }
 }

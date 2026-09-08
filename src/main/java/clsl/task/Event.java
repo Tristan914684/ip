@@ -42,6 +42,14 @@ public class Event extends Task {
         return "E | " + super.getSaveString() + " | " + startDate + " | " + endDate;
     }
 
+    @Override
+    public boolean isDuplicateOf(Task other) {
+        return other instanceof Event
+                && super.isDuplicateOf(other)
+                && startDate.equals(((Event) other).startDate)
+                && endDate.equals(((Event) other).endDate);
+    }
+
     /**
      * Returns whether this event occurs on the specified date, inclusively.
      *
