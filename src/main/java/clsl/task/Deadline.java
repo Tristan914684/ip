@@ -36,6 +36,13 @@ public class Deadline extends Task {
         return "D | " + super.getSaveString() + " | " + dueDate;
     }
 
+    @Override
+    public boolean isDuplicateOf(Task other) {
+        return other instanceof Deadline
+                && super.isDuplicateOf(other)
+                && dueDate.equals(((Deadline) other).dueDate);
+    }
+
     /**
      * Returns whether this deadline is due on the specified date.
      *

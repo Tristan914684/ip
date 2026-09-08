@@ -1,30 +1,49 @@
-# Duke User Guide
+# Clsl User Guide
 
 // Update the title above to match the actual product name
 
 // Product screenshot goes here
 
-// Product intro goes here
+Clsl is a simple task manager for to-dos, deadlines, and events.
 
-## Adding deadlines
+## Adding tasks
 
-// Describe the action and its outcome.
+Add a to-do with:
 
-// Give examples of usage
-
-Example: `keyword (optional arguments)`
-
-// A description of the expected outcome goes here
-
-```
-expected output
+```text
+todo <description>
 ```
 
-## Feature ABC
+Add a deadline with:
 
-// Feature details
+```text
+deadline <description> /by <yyyy-mm-dd>
+```
 
+Add an event with:
 
-## Feature XYZ
+```text
+event <description> /from <yyyy-mm-dd> /to <yyyy-mm-dd>
+```
 
-// Feature details
+## Duplicate tasks
+
+Clsl rejects a newly added task when an existing task of the same type has the same description,
+ignoring capitalization and whitespace. Deadlines must also have the same due date, and events
+must also have the same start and end dates.
+
+For example, after adding `todo Buy milk`, the following command is rejected:
+
+```text
+todo BU Y   MILK
+```
+
+The response is:
+
+```text
+already added
+```
+
+Completion status does not make an otherwise identical task different. Existing duplicate tasks
+from older data files are preserved.
+
