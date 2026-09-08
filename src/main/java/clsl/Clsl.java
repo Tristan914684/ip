@@ -63,45 +63,21 @@ public class Clsl {
             switch (parsedCommand.getType()) {
                 case LIST:
                     return ui.formatTaskList(tasks.asList());
-                case MARK: {
-                    int taskIndex = parsedCommand.getTaskIndex();
-                    tasks.mark(taskIndex);
-                    storage.save(tasks.asList());
-                    return ui.formatTaskMarked(tasks.get(taskIndex));
-                }
-                case UNMARK: {
-                    int taskIndex = parsedCommand.getTaskIndex();
-                    tasks.unmark(taskIndex);
-                    storage.save(tasks.asList());
-                    return ui.formatTaskUnmarked(tasks.get(taskIndex));
-                }
-                case TODO: {
-                    ToDo todo = new ToDo(parsedCommand.getDescription());
-                    tasks.add(todo);
-                    storage.save(tasks.asList());
-                    return ui.formatTaskAdded(todo, tasks.size());
-                }
-                case DEADLINE: {
-                    Deadline deadline = new Deadline(parsedCommand.getDescription(),
-                            parsedCommand.getFirstDate().toString());
-                    tasks.add(deadline);
-                    storage.save(tasks.asList());
-                    return ui.formatTaskAdded(deadline, tasks.size());
-                }
-                case EVENT: {
-                    Event event = new Event(parsedCommand.getDescription(),
+                case MARK:
+                    return markTask(parsedCommand.getTaskIndex());
+                case UNMARK:
+                    return unmarkTask(parsedCommand.getTaskIndex());
+                case TODO:
+                    return addTask(new ToDo(parsedCommand.getDescription()));
+                case DEADLINE:
+                    return addTask(new Deadline(parsedCommand.getDescription(),
+                            parsedCommand.getFirstDate().toString()));
+                case EVENT:
+                    return addTask(new Event(parsedCommand.getDescription(),
                             parsedCommand.getFirstDate().toString(),
-                            parsedCommand.getSecondDate().toString());
-                    tasks.add(event);
-                    storage.save(tasks.asList());
-                    return ui.formatTaskAdded(event, tasks.size());
-                }
-                case DELETE: {
-                    int taskIndex = parsedCommand.getTaskIndex();
-                    Task removed = tasks.delete(taskIndex);
-                    storage.save(tasks.asList());
-                    return ui.formatTaskDeleted(removed, tasks.size());
-                }
+                            parsedCommand.getSecondDate().toString()));
+                case DELETE:
+                    return deleteTask(parsedCommand.getTaskIndex());
                 case ON:
                     return ui.formatTasksOn(parsedCommand.getFirstDate(),
                             tasks.getTasksOn(parsedCommand.getFirstDate()));
@@ -118,6 +94,30 @@ public class Clsl {
         } catch (IOException e) {
             return ui.formatError("Unable to save task data. Please try again.");
         }
+    }
+
+    private String markTask(int taskIndex) throws IOException {
+        tasks.mark(taskIndex);
+        storage.save(tasks.asList());
+        return ui.formatTaskMarked(tasks.get(taskIndex));
+    }
+
+    private String unmarkTask(int taskIndex) throws IOException {
+        tasks.unmark(taskIndex);
+        storage.save(tasks.asList());
+        return ui.formatTaskUnmarked(tasks.get(taskIndex));
+    }
+
+    private String addTask(Task task) throws IOException {
+        tasks.add(task);
+        storage.save(tasks.asList());
+        return ui.formatTaskAdded(task, tasks.size());
+    }
+
+    private String deleteTask(int taskIndex) throws IOException {
+        Task removedTask = tasks.delete(taskIndex);
+        storage.save(tasks.asList());
+        return ui.formatTaskDeleted(removedTask, tasks.size());
     }
 
     /** Starts the application with its default task data file. */
