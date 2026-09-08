@@ -10,7 +10,7 @@ import clsl.task.Event;
 import clsl.task.Task;
 import clsl.task.TaskList;
 import clsl.task.ToDo;
-import clsl.ui.Ui;
+import clsl.ui.console.Ui;
 
 /**
  * Coordinates user interaction, command processing, task management, and storage.

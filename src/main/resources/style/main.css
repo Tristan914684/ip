@@ -1,0 +1,136 @@
+/* Main application palette: ice white, pale blue, and medium blue. */
+.app-shell {
+    -fx-background-color: #c7e1f4;
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+.header {
+    -fx-background-color: linear-gradient(to right, #9dc9e8, #6fa8d5);
+    -fx-border-color: transparent transparent #5d98c5 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.header-avatar {
+    -fx-effect: dropshadow(gaussian, rgba(41, 93, 135, 0.22), 8, 0.2, 0, 2);
+}
+
+.app-title {
+    -fx-text-fill: #174d78;
+    -fx-font-size: 25px;
+    -fx-font-weight: bold;
+}
+
+.app-subtitle,
+.hint-text {
+    -fx-text-fill: #527895;
+    -fx-font-size: 12px;
+}
+
+.conversation-scroll {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.conversation-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.snowfall {
+    -fx-background-color: #c7e1f4;
+}
+
+.snowflake {
+    -fx-font-family: "Segoe UI Symbol";
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 54px;
+}
+
+.small-snowflake {
+    -fx-font-size: 54px;
+    -fx-text-fill: #ffffff;
+}
+
+.large-symbol {
+    -fx-font-size: 54px;
+}
+
+.snowfall .label {
+    -fx-text-fill: #ffffff;
+}
+
+.user-message {
+    -fx-alignment: center-right;
+}
+
+.clsl-message {
+    -fx-alignment: center-left;
+}
+
+.message-bubble {
+    -fx-background-radius: 16px;
+    -fx-padding: 10px 14px;
+    -fx-max-width: 300px;
+}
+
+.clsl-message .message-bubble {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #c7e0f2;
+    -fx-border-radius: 16px;
+}
+
+.user-message .message-bubble {
+    -fx-background-color: #2e78b7;
+    -fx-background-radius: 16px;
+}
+
+.sender-label {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 4px 0;
+}
+
+.clsl-message .sender-label {
+    -fx-text-fill: #28618e;
+}
+
+.user-message .sender-label,
+.user-message .message-text {
+    -fx-text-fill: white;
+}
+
+.message-text {
+    -fx-font-size: 14px;
+    -fx-text-fill: #23445d;
+}
+
+.composer-container {
+    -fx-background-color: #a9cde8;
+    -fx-border-color: #83b4d7 transparent transparent transparent;
+    -fx-border-width: 1 0 0 0;
+}
+
+.composer {
+    -fx-background-color: white;
+    -fx-background-radius: 24px;
+    -fx-border-color: #b3d5ed;
+    -fx-border-radius: 24px;
+    -fx-padding: 4px 6px 4px 14px;
+}
+
+.message-input {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-font-size: 14px;
+}
+
+.send-button {
+    -fx-background-color: #2e78b7;
+    -fx-background-radius: 18px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 9px 16px;
+}
+
+.send-button:hover {
+    -fx-background-color: #225f95;
+}

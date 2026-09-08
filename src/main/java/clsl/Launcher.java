@@ -1,6 +1,6 @@
 package clsl;
 
-import clsl.ui.Main;
+import clsl.ui.javafx.Main;
 import javafx.application.Application;
 
 /**

@@ -1,4 +1,4 @@
-package clsl.ui;
+package clsl.ui.console;
 
 import java.time.LocalDate;
 import java.util.List;
