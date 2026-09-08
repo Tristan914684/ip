@@ -1,12 +1,12 @@
 /* Main application palette: ice white, pale blue, and medium blue. */
 .app-shell {
-    -fx-background-color: #c7e1f4;
+    -fx-background-color: #8fb9d8;
     -fx-font-family: "Segoe UI", sans-serif;
 }
 
 .header {
-    -fx-background-color: linear-gradient(to right, #9dc9e8, #6fa8d5);
-    -fx-border-color: transparent transparent #5d98c5 transparent;
+    -fx-background-color: linear-gradient(to right, #5c97c2, #3678aa);
+    -fx-border-color: transparent transparent #2e6794 transparent;
     -fx-border-width: 0 0 1 0;
 }
 
@@ -36,7 +36,7 @@
 }
 
 .snowfall {
-    -fx-background-color: #c7e1f4;
+    -fx-background-color: #8fb9d8;
 }
 
 .snowflake {
@@ -104,8 +104,8 @@
 }
 
 .composer-container {
-    -fx-background-color: #a9cde8;
-    -fx-border-color: #83b4d7 transparent transparent transparent;
+    -fx-background-color: #6f9fc3;
+    -fx-border-color: #4f87b2 transparent transparent transparent;
     -fx-border-width: 1 0 0 0;
 }
 
