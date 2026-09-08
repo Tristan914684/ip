@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane styleClass="app-shell" stylesheets="@../style/main.css"
+            xmlns="http://javafx.com/javafx/17.0.7"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="clsl.ui.javafx.MainController">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="14" styleClass="header">
+            <padding>
+                <Insets bottom="18" left="22" right="22" top="18" />
+            </padding>
+            <ImageView fitHeight="54" fitWidth="54" preserveRatio="true" styleClass="header-avatar">
+                <image>
+                    <Image url="@../images/pig.jpg" />
+                </image>
+            </ImageView>
+            <VBox spacing="3">
+                <Label styleClass="app-title" text="Clsl" />
+                <Label styleClass="app-subtitle" text="Your friendly OINK" />
+            </VBox>
+        </HBox>
+    </top>
+    <center>
+        <StackPane>
+            <Pane mouseTransparent="true" styleClass="snowfall">
+                <Label layoutX="28" layoutY="38" rotate="-35" styleClass="snowflake" text="❆" />
+                <Label layoutX="118" layoutY="122" rotate="48" scaleX="4.0" scaleY="4.0" styleClass="snowflake large-symbol" text="✦" />
+                <Label layoutX="220" layoutY="62" rotate="-22" styleClass="snowflake" text="❄" />
+                <Label layoutX="334" layoutY="156" rotate="67" scaleX="4.0" scaleY="4.0" styleClass="snowflake large-symbol" text="✧" />
+                <Label layoutX="68" layoutY="278" rotate="29" scaleX="4.0" scaleY="4.0" styleClass="snowflake large-symbol" text="❅" />
+                <Label layoutX="286" layoutY="326" rotate="-52" styleClass="snowflake" text="✣" />
+            </Pane>
+            <ScrollPane fx:id="scrollPane" fitToWidth="true" hbarPolicy="NEVER" styleClass="conversation-scroll">
+                <content>
+                    <VBox fx:id="dialogContainer" spacing="16">
+                        <padding>
+                            <Insets bottom="22" left="22" right="22" top="22" />
+                        </padding>
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </StackPane>
+    </center>
+    <bottom>
+        <VBox spacing="8" styleClass="composer-container">
+            <padding>
+                <Insets bottom="18" left="18" right="18" top="14" />
+            </padding>
+            <HBox alignment="CENTER" spacing="10" styleClass="composer">
+                <TextField fx:id="userInput" promptText="Type a command..." styleClass="message-input" HBox.hgrow="ALWAYS" />
+                <Button mnemonicParsing="false" onAction="#handleUserInput" styleClass="send-button" text="Send" />
+            </HBox>
+        </VBox>
+    </bottom>
+</BorderPane>
