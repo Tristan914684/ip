@@ -16,6 +16,12 @@ import clsl.task.ToDo;
  * Handles saving task data to the hard disk.
  */
 public class Storage {
+    private static final String FIELD_SEPARATOR = " \\| ";
+    private static final String TODO_MARKER = "T";
+    private static final String DEADLINE_MARKER = "D";
+    private static final String EVENT_MARKER = "E";
+    private static final String COMPLETED_STATUS = "1";
+
     private final Path filePath;
 
     /**
@@ -60,20 +66,20 @@ public class Storage {
         List<Task> tasks = new ArrayList<>();
 
         for (String line : lines) {
-            String[] parts = line.split(" \\| ");
+            String[] parts = line.split(FIELD_SEPARATOR);
             Task task;
 
-            if (parts[0].equals("T")) {
+            if (parts[0].equals(TODO_MARKER)) {
                 task = new ToDo(parts[2]);
-            } else if (parts[0].equals("D")) {
+            } else if (parts[0].equals(DEADLINE_MARKER)) {
                 task = new Deadline(parts[2], parts[3]);
-            } else if (parts[0].equals("E")) {
+            } else if (parts[0].equals(EVENT_MARKER)) {
                 task = new Event(parts[2], parts[3], parts[4]);
             } else {
                 throw new ClslException("Unknown task type in file input");
             }
 
-            if (parts[1].equals("1")) {
+            if (parts[1].equals(COMPLETED_STATUS)) {
                 task.markAsDone();
             }
             tasks.add(task);
