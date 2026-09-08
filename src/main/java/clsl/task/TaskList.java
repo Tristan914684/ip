@@ -21,6 +21,7 @@ public class TaskList {
      * @param tasks Tasks to include in this task list.
      */
     public TaskList(List<Task> tasks) {
+        assert tasks != null : "Loaded task list must not be null";
         this.tasks = new ArrayList<>(tasks);
     }
 

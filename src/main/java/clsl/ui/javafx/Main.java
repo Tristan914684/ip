@@ -13,6 +13,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Parent mainLayout = FXMLLoader.load(getClass().getResource("/view/Main.fxml"));
+        assert mainLayout != null : "Main.fxml must load successfully";
         Scene scene = new Scene(mainLayout, 400, 600);
         stage.setTitle("Clsl");
         stage.setScene(scene);

@@ -39,6 +39,7 @@ public class Clsl {
             ui.showMessage(ui.formatLoadingError(e.getMessage()));
             loadedTasks = new TaskList();
         }
+        assert loadedTasks != null : "Application must always have a task list";
         tasks = loadedTasks;
     }
 
