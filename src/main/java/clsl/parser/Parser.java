@@ -21,6 +21,10 @@ public class Parser {
      * @throws ClslException If the command is incomplete or invalid.
      */
     public static ParsedCommand parse(String userInput) throws ClslException {
+        if (userInput == null || userInput.isBlank()) {
+            throw new ClslException("command cannot be blank");
+        }
+
         String[] commandParts = userInput.trim().split("\\s+", 2);
         String commandWord = commandParts[0];
         String arguments = commandParts.length == 2 ? commandParts[1].trim() : "";
