@@ -50,7 +50,7 @@ public class Ui {
 
     /** Returns an error message for an invalid command or failed operation. */
     public String formatError(String message) {
-        return "\n" + message + "\n";
+        return "\nERROR: " + message + "\n";
     }
 
     /** Returns a formatted list of all tasks. */
