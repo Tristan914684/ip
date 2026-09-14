@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import clsl.Clsl;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -18,6 +20,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 /** Controls the main JavaFX window defined in {@code Main.fxml}. */
 public class MainController {
@@ -41,6 +44,9 @@ public class MainController {
     @FXML
     private TextField userInput;
 
+    @FXML
+    private Button sendButton;
+
     private Clsl clsl;
     private Image clslAvatar;
     private Image userAvatar;
@@ -54,6 +60,7 @@ public class MainController {
         assert backgroundImageView != null : "FXML must inject background image";
         assert dialogContainer != null : "FXML must inject dialogContainer";
         assert userInput != null : "FXML must inject userInput";
+        assert sendButton != null : "FXML must inject sendButton";
         clsl = new Clsl("data/csls.txt");
         clslAvatar = loadImage("/images/pig.jpg");
         userAvatar = loadImage("/images/dog.jpg");
@@ -78,8 +85,17 @@ public class MainController {
         userInput.clear();
         scrollToBottom();
         if (command.trim().equals("bye")) {
-            Platform.exit();
+            userInput.setDisable(true);
+            sendButton.setDisable(true);
+            scheduleApplicationExit();
         }
+    }
+
+    /** Closes the application five seconds after displaying the goodbye message. */
+    private void scheduleApplicationExit() {
+        PauseTransition exitDelay = new PauseTransition(Duration.seconds(5));
+        exitDelay.setOnFinished(event -> Platform.exit());
+        exitDelay.play();
     }
 
     /** Adds a message to the conversation display. */

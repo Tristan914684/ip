@@ -60,7 +60,8 @@
             </padding>
             <HBox alignment="CENTER" spacing="10" styleClass="composer">
                 <TextField fx:id="userInput" styleClass="message-input" HBox.hgrow="ALWAYS" />
-                <Button mnemonicParsing="false" onAction="#handleUserInput" styleClass="send-button" text="Send" />
+                <Button fx:id="sendButton" mnemonicParsing="false" onAction="#handleUserInput"
+                        styleClass="send-button" text="Send" />
             </HBox>
         </VBox>
     </bottom>
