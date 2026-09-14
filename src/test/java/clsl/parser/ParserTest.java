@@ -37,6 +37,24 @@ public class ParserTest {
     }
 
     @Test
+    void parse_eventWithSameStartAndEndDate_returnsEventDetails() throws Exception {
+        ParsedCommand command = Parser.parse(
+                "event conference /from 2026-09-01 /to 2026-09-01");
+
+        assertEquals(ParsedCommand.Type.EVENT, command.getType());
+        assertEquals("2026-09-01", command.getFirstDate().toString());
+        assertEquals("2026-09-01", command.getSecondDate().toString());
+    }
+
+    @Test
+    void parse_eventWithStartDateAfterEndDate_throwsHelpfulException() {
+        ClslException exception = assertThrows(ClslException.class,
+                () -> Parser.parse("event conference /from 2026-09-03 /to 2026-09-01"));
+
+        assertEquals("from date cannot be later than to date", exception.getMessage());
+    }
+
+    @Test
     void parse_findCommand_returnsKeyword() throws Exception {
         ParsedCommand command = Parser.parse("find book");
 
