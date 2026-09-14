@@ -14,8 +14,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
 /** Controls the main JavaFX window defined in {@code Main.fxml}. */
 public class MainController {
@@ -26,6 +28,12 @@ public class MainController {
 
     @FXML
     private ScrollPane scrollPane;
+
+    @FXML
+    private StackPane conversationArea;
+
+    @FXML
+    private ImageView backgroundImageView;
 
     @FXML
     private VBox dialogContainer;
@@ -42,11 +50,14 @@ public class MainController {
     @FXML
     private void initialize() {
         assert scrollPane != null : "FXML must inject scrollPane";
+        assert conversationArea != null : "FXML must inject conversation area";
+        assert backgroundImageView != null : "FXML must inject background image";
         assert dialogContainer != null : "FXML must inject dialogContainer";
         assert userInput != null : "FXML must inject userInput";
         clsl = new Clsl("data/csls.txt");
         clslAvatar = loadImage("/images/pig.jpg");
         userAvatar = loadImage("/images/dog.jpg");
+        configureConversationArea();
         userInput.setOnAction(this::handleUserInput);
         dialogContainer.widthProperty().addListener((observable, oldWidth, newWidth) ->
                 resizeMessageBubbles(newWidth.doubleValue()));
@@ -110,6 +121,21 @@ public class MainController {
         double messageWidth = Math.min(MAX_MESSAGE_WIDTH,
                 Math.max(MIN_MESSAGE_WIDTH, responsiveWidth));
         bubble.setMaxWidth(messageWidth);
+    }
+
+    /** Adds the static CLSL artwork as a responsive background without covering controls. */
+    private void configureConversationArea() {
+        backgroundImageView.setPreserveRatio(false);
+        backgroundImageView.setSmooth(true);
+        backgroundImageView.setManaged(false);
+        backgroundImageView.fitWidthProperty().bind(conversationArea.widthProperty());
+        backgroundImageView.fitHeightProperty().bind(conversationArea.heightProperty());
+        StackPane.setAlignment(backgroundImageView, Pos.CENTER);
+
+        Rectangle conversationClip = new Rectangle();
+        conversationClip.widthProperty().bind(conversationArea.widthProperty());
+        conversationClip.heightProperty().bind(conversationArea.heightProperty());
+        conversationArea.setClip(conversationClip);
     }
 
     /** Loads an avatar image from the application resources. */
