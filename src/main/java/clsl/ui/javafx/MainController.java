@@ -77,6 +77,9 @@ public class MainController {
         addDialog("Clsl", clsl.getResponse(command), false);
         userInput.clear();
         scrollToBottom();
+        if (command.trim().equals("bye")) {
+            Platform.exit();
+        }
     }
 
     /** Adds a message to the conversation display. */
