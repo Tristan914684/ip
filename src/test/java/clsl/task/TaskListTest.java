@@ -88,12 +88,12 @@ public class TaskListTest {
     }
 
     @Test
-    void constructor_existingDuplicates_preservesAllTasks() {
+    void constructor_existingDuplicates_keepsFirstOccurrence() {
         Task firstTask = new ToDo("Buy milk");
         Task secondTask = new ToDo("buy milk");
 
         TaskList taskList = new TaskList(List.of(firstTask, secondTask));
 
-        assertEquals(List.of(firstTask, secondTask), taskList.asList());
+        assertEquals(List.of(firstTask), taskList.asList());
     }
 }

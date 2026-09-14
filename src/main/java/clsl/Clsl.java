@@ -1,6 +1,7 @@
 package clsl;
 
 import java.io.IOException;
+import java.util.List;
 
 import clsl.parser.ParsedCommand;
 import clsl.parser.Parser;
@@ -31,7 +32,16 @@ public class Clsl {
         storage = new Storage(filePath);
         TaskList loadedTasks;
         try {
-            loadedTasks = new TaskList(storage.load());
+            List<Task> savedTasks = storage.load();
+            loadedTasks = new TaskList(savedTasks);
+            if (loadedTasks.size() < savedTasks.size()) {
+                try {
+                    storage.save(loadedTasks.asList());
+                } catch (IOException e) {
+                    ui.showMessage(ui.formatLoadingError(
+                            "Loaded tasks, but could not remove duplicate tasks from storage."));
+                }
+            }
         } catch (IOException e) {
             ui.showMessage(ui.formatLoadingError("Unable to load saved tasks. Starting with an empty task list."));
             loadedTasks = new TaskList();

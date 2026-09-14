@@ -24,7 +24,12 @@ public class TaskList {
      */
     public TaskList(List<Task> tasks) {
         assert tasks != null : "Loaded task list must not be null";
-        this.tasks = new ArrayList<>(tasks);
+        this.tasks = new ArrayList<>();
+        for (Task task : tasks) {
+            if (!containsDuplicate(task)) {
+                this.tasks.add(task);
+            }
+        }
     }
 
     /**
@@ -34,12 +39,20 @@ public class TaskList {
      * @throws ClslException If an equivalent task is already in the list.
      */
     public void add(Task task) throws ClslException {
-        for (Task existingTask : tasks) {
-            if (existingTask.isDuplicateOf(task)) {
-                throw new ClslException("already added");
-            }
+        if (containsDuplicate(task)) {
+            throw new ClslException("already added");
         }
         tasks.add(task);
+    }
+
+    /** Returns whether this list already contains a task equivalent to the specified task. */
+    private boolean containsDuplicate(Task task) {
+        for (Task existingTask : tasks) {
+            if (existingTask.isDuplicateOf(task)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
