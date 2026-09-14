@@ -21,4 +21,18 @@ public class ClslTest {
         assertEquals("\nHere are your tasks in your list:\n1.[T][ ] Buy milk\n",
                 clsl.getResponse("list"));
     }
+
+    @Test
+    void getResponse_usingTaskNumberBeyondList_returnsRangeError() {
+        Clsl clsl = new Clsl(temporaryDirectory.resolve("tasks.txt").toString());
+        clsl.getResponse("todo Buy milk");
+
+        assertEquals("\ntask number must be at least 1\n", clsl.getResponse("mark 0"));
+        assertEquals("\ntask number must be at least 1\n", clsl.getResponse("mark -1"));
+        assertEquals("\ntask number is out of range\n", clsl.getResponse("mark 2"));
+        assertEquals("\ntask number is out of range\n", clsl.getResponse("unmark 2"));
+        assertEquals("\ntask number is out of range\n", clsl.getResponse("delete 2"));
+        assertEquals("\nHere are your tasks in your list:\n1.[T][ ] Buy milk\n",
+                clsl.getResponse("list"));
+    }
 }
