@@ -48,8 +48,8 @@ public class ParserTest {
 
     @Test
     void parse_eventWithStartDateAfterEndDate_throwsHelpfulException() {
-        ClslException exception = assertThrows(ClslException.class,
-                () -> Parser.parse("event conference /from 2026-09-03 /to 2026-09-01"));
+        ClslException exception = assertThrows(ClslException.class, () ->
+                Parser.parse("event conference /from 2026-09-03 /to 2026-09-01"));
 
         assertEquals("from date cannot be later than to date", exception.getMessage());
     }
