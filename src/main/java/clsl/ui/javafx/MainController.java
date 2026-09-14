@@ -1,5 +1,8 @@
 package clsl.ui.javafx;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import clsl.Clsl;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -16,6 +19,11 @@ import javafx.scene.shape.Circle;
 
 /** Controls the main JavaFX window defined in {@code Main.fxml}. */
 public class MainController {
+    private static final double MESSAGE_WIDTH_RATIO = 0.82;
+    private static final double MIN_MESSAGE_WIDTH = 180;
+    private static final double MAX_MESSAGE_WIDTH = 720;
+    private static final double AVATAR_AND_GAP_WIDTH = 52;
+
     @FXML
     private ScrollPane scrollPane;
 
@@ -28,6 +36,7 @@ public class MainController {
     private Clsl clsl;
     private Image clslAvatar;
     private Image userAvatar;
+    private final List<VBox> messageBubbles = new ArrayList<>();
 
     /** Initializes the application logic and displays the welcome message. */
     @FXML
@@ -39,6 +48,8 @@ public class MainController {
         clslAvatar = loadImage("/images/pig.jpg");
         userAvatar = loadImage("/images/dog.jpg");
         userInput.setOnAction(this::handleUserInput);
+        dialogContainer.widthProperty().addListener((observable, oldWidth, newWidth) ->
+                resizeMessageBubbles(newWidth.doubleValue()));
         dialogContainer.heightProperty().addListener((observable, oldHeight, newHeight) -> scrollToBottom());
         addDialog("Clsl", "Hello! I'm Clsl.\nWhat can I do for you?", false);
     }
@@ -68,9 +79,13 @@ public class MainController {
 
         VBox bubble = new VBox(sender, dialog);
         bubble.getStyleClass().add("message-bubble");
+        bubble.setFillWidth(true);
+        messageBubbles.add(bubble);
+        resizeMessageBubble(bubble, dialogContainer.getWidth());
 
         ImageView avatar = createAvatar(isUser ? userAvatar : clslAvatar);
         HBox dialogRow = new HBox(10);
+        dialogRow.setMaxWidth(Double.MAX_VALUE);
         dialogRow.getStyleClass().add("message-row");
         dialogRow.getStyleClass().add(isUser ? "user-message" : "clsl-message");
         dialogRow.setAlignment(isUser ? Pos.CENTER_RIGHT : Pos.CENTER_LEFT);
@@ -80,6 +95,21 @@ public class MainController {
             dialogRow.getChildren().addAll(avatar, bubble);
         }
         dialogContainer.getChildren().add(dialogRow);
+    }
+
+    /** Resizes all message bubbles to fit the current conversation width. */
+    private void resizeMessageBubbles(double containerWidth) {
+        for (VBox bubble : messageBubbles) {
+            resizeMessageBubble(bubble, containerWidth);
+        }
+    }
+
+    /** Sets a readable responsive width for one message bubble. */
+    private void resizeMessageBubble(VBox bubble, double containerWidth) {
+        double responsiveWidth = containerWidth * MESSAGE_WIDTH_RATIO - AVATAR_AND_GAP_WIDTH;
+        double messageWidth = Math.min(MAX_MESSAGE_WIDTH,
+                Math.max(MIN_MESSAGE_WIDTH, responsiveWidth));
+        bubble.setMaxWidth(messageWidth);
     }
 
     /** Loads an avatar image from the application resources. */
