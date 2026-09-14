@@ -1,6 +1,7 @@
 package clsl;
 
 import java.io.IOException;
+import java.util.List;
 
 import clsl.parser.ParsedCommand;
 import clsl.parser.Parser;
@@ -31,7 +32,16 @@ public class Clsl {
         storage = new Storage(filePath);
         TaskList loadedTasks;
         try {
-            loadedTasks = new TaskList(storage.load());
+            List<Task> savedTasks = storage.load();
+            loadedTasks = new TaskList(savedTasks);
+            if (loadedTasks.size() < savedTasks.size()) {
+                try {
+                    storage.save(loadedTasks.asList());
+                } catch (IOException e) {
+                    ui.showMessage(ui.formatLoadingError(
+                            "Loaded tasks, but could not remove duplicate tasks from storage."));
+                }
+            }
         } catch (IOException e) {
             ui.showMessage(ui.formatLoadingError("Unable to load saved tasks. Starting with an empty task list."));
             loadedTasks = new TaskList();
@@ -97,13 +107,15 @@ public class Clsl {
         }
     }
 
-    private String markTask(int taskIndex) throws IOException {
+    private String markTask(int taskIndex) throws IOException, ClslException {
+        requireValidTaskIndex(taskIndex);
         tasks.mark(taskIndex);
         storage.save(tasks.asList());
         return ui.formatTaskMarked(tasks.get(taskIndex));
     }
 
-    private String unmarkTask(int taskIndex) throws IOException {
+    private String unmarkTask(int taskIndex) throws IOException, ClslException {
+        requireValidTaskIndex(taskIndex);
         tasks.unmark(taskIndex);
         storage.save(tasks.asList());
         return ui.formatTaskUnmarked(tasks.get(taskIndex));
@@ -115,10 +127,18 @@ public class Clsl {
         return ui.formatTaskAdded(task, tasks.size());
     }
 
-    private String deleteTask(int taskIndex) throws IOException {
+    private String deleteTask(int taskIndex) throws IOException, ClslException {
+        requireValidTaskIndex(taskIndex);
         Task removedTask = tasks.delete(taskIndex);
         storage.save(tasks.asList());
         return ui.formatTaskDeleted(removedTask, tasks.size());
+    }
+
+    /** Checks that a task index refers to a task currently in the list. */
+    private void requireValidTaskIndex(int taskIndex) throws ClslException {
+        if (taskIndex < 0 || taskIndex >= tasks.size()) {
+            throw new ClslException("task number is out of range");
+        }
     }
 
     /** Starts the application with its default task data file. */

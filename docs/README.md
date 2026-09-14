@@ -44,6 +44,7 @@ The response is:
 already added
 ```
 
-Completion status does not make an otherwise identical task different. Existing duplicate tasks
-from older data files are preserved.
+Completion status does not make an otherwise identical task different. When duplicate tasks are
+found in an older data file, Clsl keeps the first occurrence, removes the later occurrences, and
+rewrites the file with consecutive task indices.
 

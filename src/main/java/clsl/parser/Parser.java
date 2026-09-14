@@ -86,6 +86,9 @@ public class Parser {
 
         LocalDate startDate = parseDate(toParts[0], "from when?");
         LocalDate endDate = parseDate(toParts[1], "to when?");
+        if (startDate.isAfter(endDate)) {
+            throw new ClslException("from date cannot be later than to date");
+        }
         return ParsedCommand.withEventDetails(description, startDate, endDate);
     }
 
