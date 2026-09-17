@@ -162,7 +162,8 @@ unmark 1
 ### Deleting a task: `delete`
 
 Deletes the task at the specified task number. The remaining tasks are then
-displayed with consecutive task numbers.
+kept in their order and are shown with consecutive task numbers the next time
+you use `list`.
 
 **Format:** `delete TASK_NUMBER`
 
@@ -200,9 +201,12 @@ D | 1 | submit report | 2026-09-30
 E | 0 | project meeting | 2026-09-20 | 2026-09-20
 ```
 
-**Caution:** If the data file is invalid, Clsl may be unable to load the saved
-tasks and will start with an empty task list. Back up the file before editing
-it, and edit it only if you are confident that the format remains valid.
+**Caution:** Clsl expects every line in the data file to follow the format
+shown above. If the file cannot be read or contains an unknown task type, Clsl
+displays a loading error and starts with an empty task list. Other malformed
+records, such as records with missing fields or invalid dates, may prevent Clsl
+from starting. Back up the file before editing it, and edit it only if you are
+confident that the format remains valid.
 
 Clsl rejects duplicate tasks of the same type when their descriptions match
 after ignoring capitalization and whitespace. Deadlines must also have the
@@ -214,9 +218,10 @@ occurrence and removes later occurrences.
 
 **Q: How do I transfer my tasks to another computer?**
 
-**A:** Install Clsl on the other computer, run it once to create its `data`
-folder, then replace the new `data/csls.txt` with a copy of the file from your
-previous Clsl folder.
+**A:** Install Clsl on the other computer and place it in the folder you want
+to use as its home folder. Create a `data` folder there if it does not already
+exist, then copy your previous `data/csls.txt` file into it before starting
+Clsl.
 
 **Q: What happens if I enter an invalid command?**
 
